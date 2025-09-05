@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام إدخال نتائج الامتحانات - للمعلمين</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f0f2f5;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .admin-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #1a237e 0%, #283593 100%);
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+        }
+        
+        .header-title {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .header-subtitle {
+            font-size: 18px;
+            opacity: 0.9;
+        }
+        
+        .main-content {
+            padding: 30px;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 30px;
+            color: #1a237e;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        
+        .form-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+        
+        .form-group select, 
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            background-color: #f9f9f9;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group select:focus, 
+        .form-group input:focus {
+            border-color: #3949ab;
+            outline: none;
+        }
+        
+        .full-width {
+            grid-column: span 2;
+        }
+        
+        .subject-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+            align-items: center;
+        }
+        
+        .subject-name {
+            font-weight: bold;
+            color: #555;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .action-button {
+            flex: 1;
+            color: white;
+            border: none;
+            padding: 15px;
+            font-size: 18px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .save-button {
+            background: linear-gradient(135deg, #2e7d32 0%, #4caf50 100%);
+        }
+        
+        .update-button {
+            background: linear-gradient(135deg, #ff9800 0%, #ff5722 100%);
+        }
+        
+        .delete-button {
+            background: linear-gradient(135deg, #c62828 0%, #d32f2f 100%);
+        }
+        
+        .action-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .students-list {
+            margin-top: 40px;
+        }
+        
+        .students-list h3 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #1a237e;
+            font-size: 22px;
+        }
+        
+        .students-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        .students-table th, 
+        .students-table td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+        
+        .students-table th {
+            background-color: #e8eaf6;
+            color: #1a237e;
+        }
+        
+        .students-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        .students-table .action-cell {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            border: none;
+        }
+        
+        .icon-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            color: #3949ab;
+            transition: color 0.3s;
+        }
+        
+        .edit-button:hover {
+            color: #ff9800;
+        }
+        
+        .delete-list-button:hover {
+            color: #c62828;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #1a237e;
+            color: white;
+            margin-top: 30px;
+        }
+        
+        .message {
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+            text-align: center;
+            display: none;
+        }
+        
+        .success-message {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            border: 1px solid #c8e6c9;
+        }
+        
+        .error-message {
+            background-color: #ffebee;
+            color: #c62828;
+            border: 1px solid #ffcdd2;
+        }
+        
+        .login-section {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 30px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .form-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .full-width {
+                grid-column: span 1;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .subject-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .students-table .action-cell {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <header>
+            <div class="header-title">مديرية الامتحانات</div>
+            <div class="header-subtitle">نظام إدخال النتائج - للمعلمين</div>
+        </header>
+        
+        <div class="main-content">
+            <h2 class="section-title">إدخال نتائج الطلاب</h2>
+            
+            <div class="form-container">
+                <div class="form-group">
+                    <label for="admin-year">السنة</label>
+                    <select id="admin-year">
+                        <option value="2025">2025</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="admin-branch">الفرع</label>
+                    <select id="admin-branch">
+                        <option value="">اختر الفرع</option>
+                        <option value="scientific">علمي</option>
+                        <option value="literary">أدبي</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="admin-name">الاسم الثلاثي</label>
+                    <input type="text" id="admin-name" placeholder="الاسم الثلاثي">
+                </div>
+                
+                <div class="form-group">
+                    <label for="admin-enrollment">رقم الاكتتاب</label>
+                    <input type="text" id="admin-enrollment" placeholder="رقم الاكتتاب">
+                </div>
+                
+                <div class="form-group">
+                    <label for="admin-language">اللغة</label>
+                    <select id="admin-language">
+                        <option value="عربية">عربية</option>
+                        <option value="فرنسية">فرنسية</option>
+                        <option value="إنكليزية">إنكليزية</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="admin-religion">الديانة</label>
+                    <select id="admin-religion">
+                        <option value="مسلم">مسلم</option>
+                        <option value="مسيحي">مسيحي</option>
+                        <option value="其他">其他</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="admin-center">المركز</label>
+                    <input type="text" id="admin-center" placeholder="اسم المركز">
+                </div>
+                
+                <div class="form-group">
+                    <label for="admin-hall">القاعة</label>
+                    <input type="text" id="admin-hall" placeholder="رقم القاعة">
+                </div>
+                
+                <div class="form-group">
+                    <label for="admin-seat">رقم الجلوس</label>
+                    <input type="text" id="admin-seat" placeholder="رقم الجلوس">
+                </div>
+                
+                <!-- المواد العلمية -->
+                <div id="scientific-subjects" class="full-width" style="display: none;">
+                    <h3>المواد العلمية</h3>
+                    <div class="subject-row">
+                        <div class="subject-name">اللغة العربية</div>
+                        <input type="number" class="subject-score" placeholder="الدرجة" data-subject="arabic" max="160" min="0">
+                        <input type="text" class="subject-max" placeholder="160/0" disabled>
+                    </div>
+                    <div class="subject-row">
+                        <div class="subject-name">علم الأحياء</div>
+                        <input type="number" class="subject-score" placeholder="الدرجة" data-subject="biology" max="120" min="0">
+                        <input type="text" class="subject-max" placeholder="120/0" disabled>
+                    </div>
+                    <div class="subject-row">
+                        <div class="subject-name">الفيزياء</div>
+                        <input type="number" class="subject-score" placeholder="الدرجة" data-subject="physics" max="400" min="0">
+                        <input type="text" class="subject-max" placeholder="400/0" disabled>
+                    </div>
+                    <div class="subject-row">
+                        <div class="subject-name">الكيمياء</div>
+                        <input type="number" class="subject-score" placeholder="الدرجة" data-subject="chemistry" max="200" min="0">
+                        <input type="text" class="subject-max" placeholder="200/0" disabled>
+                    </div>
+                    <div class="subject-row">
+                        <div class="subject-name">اللغة الإنجليزية</div>
+                        <input type="number" class="subject-score" placeholder="الدرجة" data-subject="english" max="300" min="0">
+                        <input type="text" class="subject-max" placeholder="300/0" disabled>
+                    </div>
+                    <div class="subject-row">
+                        <div class="subject-name">اللغة الفرنسية</div>
+                        <input type="number" class="subject-score" placeholder="الدرجة" data-subject="french" max="100" min="0">
+                        <input type="text" class="subject-max" placeholder="100/0" disabled>
+                    </div>
+                    <div class="subject-row">
+                        <div class="subject-name">الرياضيات</div>
+                        <input type="number" class="subject-score" placeholder="الدرجة" data-subject="math" max="240" min="0">
+                        <input type="text" class="subject-max" placeholder="240/0" disabled>
+                    </div>
+                    <div class="subject-row">
+                        <div class="subject-name">التربية الدينية</div>
+                        <input type="number" class="subject-score" placeholder="الدرجة" data-subject="religion" max="100" min="0">
+                        <input type="text" class="subject-max" placeholder="100/0" disabled>
+                    </div>
+                </div>
+                
+                <!-- المواد الأدبية -->
+                <div id="literary-subjects" class="full-width" style="display: none;">
+                    <h3>المواد الأدبية</h3>
+                    <div class="subject-row">
+                        <div class="subject-name">اللغة العربية</div>
+                        <input type="number" class="subject-score" placeholder="الدرجة" data-subject="arabic" max="200" min="0">
+                        <input type="text" class="subject-max" placeholder="200/0" disabled>
+                    </div>
+                    <div class="subject-row">
+                        <div class="subject-name">اللغة الإنجليزية</div>
+                        <input type="number" class="subject-score" placeholder="الدرجة" data-subject="english" max="200" min="0">
+                        <input type="text" class="subject-max" placeholder="200/0" disabled>
+                    </div>
+                    <div class="subject-row">
+                        <div class="subject-name">اللغة الفرنسية</div>
+                        <input type="number" class="subject-score" placeholder="الدرجة" data-subject="french" max="100" min="0">
+                        <input type="text" class="subject-max" placeholder="100/0" disabled>
+                    </div>
+                    <div class="subject-row">
+                        <div class="subject-name">التاريخ</div>
+                        <input type="number" class="subject-score" placeholder="الدرجة" data-subject="history" max="150" min="0">
+                        <input type="text" class="subject-max" placeholder="150/0" disabled>
+                    </div>
+                    <div class="subject-row">
+                        <div class="subject-name">الجغرافيا</div>
+                        <input type="number" class="subject-score" placeholder="الدرجة" data-subject="geography" max="150" min="0">
+                        <input type="text" class="subject-max" placeholder="150/0" disabled>
+                    </div>
+                    <div class="subject-row">
+                        <div class="subject-name">الفلسفة والعلوم الإنسانية</div>
+                        <input type="number" class="subject-score" placeholder="الدرجة" data-subject="philosophy" max="150" min="0">
+                        <input type="text" class="subject-max" placeholder="150/0" disabled>
+                    </div>
+                    <div class="subject-row">
+                        <div class="subject-name">التربية الدينية</div>
+                        <input type="number" class="subject-score" placeholder="الدرجة" data-subject="religion" max="100" min="0">
+                        <input type="text" class="subject-max" placeholder="100/0" disabled>
+                    </div>
+                </div>
+                
+                <div class="action-buttons full-width">
+                    <button type="button" class="action-button save-button" id="save-button">
+                        <i class="fas fa-save"></i> حفظ البيانات
+                    </button>
+                    <button type="button" class="action-button update-button" id="update-button">
+                        <i class="fas fa-edit"></i> تعديل البيانات
+                    </button>
+                    <button type="button" class="action-button delete-button" id="delete-button">
+                        <i class="fas fa-trash"></i> حذف البيانات
+                    </button>
+                </div>
+            </div>
+            
+            <div id="admin-message" class="message"></div>
+            
+            <div class="students-list">
+                <h3>الطلاب المسجلين</h3>
+                <table class="students-table">
+                    <thead>
+                        <tr>
+                            <th>رقم الاكتتاب</th>
+                            <th>الاسم</th>
+                            <th>الفرع</th>
+                            <th>المعدل</th>
+                            <th>الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody id="students-table-body">
+                        <!-- سيتم ملؤها بواسطة JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class="footer">
+            © 2025 مديرية الامتحانات - نظام إدخال النتائج
+        </div>
+    </div>
+
+    <script>
+        // تخزين البيانات محلياً
+        let studentsData = JSON.parse(localStorage.getItem('studentsData')) || {};
+        let currentEditId = null;
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // عناصر واجهة المستخدم
+            const adminBranch = document.getElementById('admin-branch');
+            const scientificSubjects = document.getElementById('scientific-subjects');
+            const literarySubjects = document.getElementById('literary-subjects');
+            const saveButton = document.getElementById('save-button');
+            const updateButton = document.getElementById('update-button');
+            const deleteButton = document.getElementById('delete-button');
+            const adminMessage = document.getElementById('admin-message');
+            const studentsTableBody = document.getElementById('students-table-body');
+            
+            // تحميل قائمة الطلاب
+            loadStudentsList();
+            
+            // إظهار المواد بناءً على الفرع
+            adminBranch.addEventListener('change', function() {
+                if (this.value === 'scientific') {
+                    scientificSubjects.style.display = 'block';
+                    literarySubjects.style.display = 'none';
+                } else if (this.value === 'literary') {
+                    scientificSubjects.style.display = 'none';
+                    literarySubjects.style.display = 'block';
+                } else {
+                    scientificSubjects.style.display = 'none';
+                    literarySubjects.style.display = 'none';
+                }
+            });
+            
+            // حفظ البيانات
+            saveButton.addEventListener('click', function() {
+                const studentData = getFormData();
+                
+                if (!studentData) return;
+                
+                // حفظ بيانات الطالب
+                studentsData[studentData.enrollment] = studentData;
+                
+                // حفظ في localStorage
+                localStorage.setItem('studentsData', JSON.stringify(studentsData));
+                
+                showMessage(adminMessage, 'تم حفظ بيانات الطالب بنجاح', 'success');
+                
+                // إعادة تحميل القائمة
+                loadStudentsList();
+                
+                // مسح الحقول
+                clearForm();
+            });
+            
+            // تعديل البيانات
+            updateButton.addEventListener('click', function() {
+                if (!currentEditId) {
+                    showMessage(adminMessage, 'يرجى اختيار طالب للتعديل', 'error');
+                    return;
+                }
+                
+                const studentData = getFormData();
+                
+                if (!studentData) return;
+                
+                // تحديث بيانات الطالب
+                studentsData[currentEditId] = studentData;
+                
+                // حفظ في localStorage
+                localStorage.setItem('studentsData', JSON.stringify(studentsData));
+                
+                showMessage(adminMessage, 'تم تعديل بيانات الطالب بنجاح', 'success');
+                
+                // إعادة تحميل القائمة
+                loadStudentsList();
+                
+                // مسح الحقول
+                clearForm();
+                currentEditId = null;
+            });
+            
+            // حذف البيانات
+            deleteButton.addEventListener('click', function() {
+                const enrollment = document.getElementById('admin-enrollment').value;
+                
+                if (!enrollment) {
+                    showMessage(adminMessage, 'يرجى إدخال رقم الاكتتاب', 'error');
+                    return;
+                }
+                
+                if (!studentsData[enrollment]) {
+                    showMessage(adminMessage, 'لا توجد بيانات لهذا رقم الاكتتاب', 'error');
+                    return;
+                }
+                
+                // حذف بيانات الطالب
+                delete studentsData[enrollment];
+                
+                // حفظ في localStorage
+                localStorage.setItem('studentsData', JSON.stringify(studentsData));
+                
+                showMessage(adminMessage, 'تم حذف بيانات الطالب بنجاح', 'success');
+                
+                // إعادة تحميل القائمة
+                loadStudentsList();
+                
+                // مسح الحقول
+                clearForm();
+                currentEditId = null;
+            });
+            
+            // دالة لجلب البيانات من النموذج
+            function getFormData() {
+                const year = document.getElementById('admin-year').value;
+                const branch = document.getElementById('admin-branch').value;
+                const name = document.getElementById('admin-name').value;
+                const enrollment = document.getElementById('admin-enrollment').value;
+                const language = document.getElementById('admin-language').value;
+                const religion = document.getElementById('admin-religion').value;
+                const center = document.getElementById('admin-center').value;
+                const hall = document.getElementById('admin-hall').value;
+                const seat = document.getElementById('admin-seat').value;
+                
+                // التحقق من الحقول المطلوبة
+                if (!branch || !name || !enrollment) {
+                    showMessage(adminMessage, 'يرجى ملء جميع الحقول المطلوبة', 'error');
+                    return null;
+                }
+                
+                // جمع درجات المواد
+                const subjects = {};
+                let totalScore = 0;
+                let maxTotal = 0;
+                
+                const subjectInputs = document.querySelectorAll('.subject-score');
+                subjectInputs.forEach(input => {
+                    if (input.value) {
+                        const score = parseInt(input.value);
+                        const max = parseInt(input.getAttribute('max'));
+                        subjects[input.getAttribute('data-subject')] = {
+                            score: score,
+                            max: max,
+                            min: 0
+                        };
+                        totalScore += score;
+                        maxTotal += max;
+                    }
+                });
+                
+                return {
+                    year: year,
+                    branch: branch,
+                    name: name,
+                    enrollment: enrollment,
+                    language: language,
+                    religion: religion,
+                    center: center,
+                    hall: hall,
+                    seat: seat,
+                    subjects: subjects,
+                    totalScore: totalScore,
+                    maxTotal: maxTotal,
+                    status: totalScore >= maxTotal * 0.5 ? 'ناجح' : 'راسب',
+                    average: maxTotal > 0 ? ((totalScore / maxTotal) * 100).toFixed(2) : 0
+                };
+            }
+            
+            // دالة لتحميل قائمة الطلاب
+            function loadStudentsList() {
+                studentsTableBody.innerHTML = '';
+                
+                for (const [enrollment, student] of Object.entries(studentsData)) {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${enrollment}</td>
+                        <td>${student.name}</td>
+                        <td>${student.branch === 'scientific' ? 'علمي' : 'أدبي'}</td>
+                        <td>${student.average}%</td>
+                        <td class="action-cell">
+                            <button class="icon-button edit-button" data-id="${enrollment}">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="icon-button delete-list-button" data-id="${enrollment}">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    `;
+                    studentsTableBody.appendChild(row);
+                }
+                
+                // إضافة مستمعي الأحداث للأزرار
+                document.querySelectorAll('.edit-button').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const enrollment = this.getAttribute('data-id');
+                        loadStudentData(enrollment);
+                    });
+                });
+                
+                document.querySelectorAll('.delete-list-button').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const enrollment = this.getAttribute('data-id');
+                        if (confirm('هل أنت متأكد من حذف بيانات هذا الطالب؟')) {
+                            delete studentsData[enrollment];
+                            localStorage.setItem('studentsData', JSON.stringify(studentsData));
+                            loadStudentsList();
+                            showMessage(adminMessage, 'تم حذف بيانات الطالب بنجاح', 'success');
+                        }
+                    });
+                });
+            }
+            
+            // دالة لتحميل بيانات الطالب في النموذج
+            function loadStudentData(enrollment) {
+                const student = studentsData[enrollment];
+                
+                if (!student) return;
+                
+                document.getElementById('admin-year').value = student.year;
+                document.getElementById('admin-branch').value = student.branch;
+                document.getElementById('admin-name').value = student.name;
+                document.getElementById('admin-enrollment').value = student.enrollment;
+                document.getElementById('admin-language').value = student.language;
+                document.getElementById('admin-religion').value = student.religion;
+                document.getElementById('admin-center').value = student.center;
+                document.getElementById('admin-hall').value = student.hall;
+                document.getElementById('admin-seat').value = student.seat;
+                
+                // إظهار المواد المناسبة
+                if (student.branch === 'scientific') {
+                    scientificSubjects.style.display = 'block';
+                    literarySubjects.style.display = 'none';
+                } else {
+                    scientificSubjects.style.display = 'none';
+                    literarySubjects.style.display = 'block';
+                }
+                
+                // تعبئة درجات المواد
+                const subjectInputs = document.querySelectorAll('.subject-score');
+                subjectInputs.forEach(input => {
+                    const subject = input.getAttribute('data-subject');
+                    if (student.subjects[subject]) {
+                        input.value = student.subjects[subject].score;
+                    } else {
+                        input.value = '';
+                    }
+                });
+                
+                currentEditId = enrollment;
+            }
+            
+            // دالة لمسح الحقول
+            function clearForm() {
+                document.getElementById('admin-branch').value = '';
+                document.getElementById('admin-name').value = '';
+                document.getElementById('admin-enrollment').value = '';
+                document.getElementById('admin-center').value = '';
+                document.getElementById('admin-hall').value = '';
+                document.getElementById('admin-seat').value = '';
+                
+                scientificSubjects.style.display = 'none';
+                literarySubjects.style.display = 'none';
+                
+                const subjectInputs = document.querySelectorAll('.subject-score');
+                subjectInputs.forEach(input => input.value = '');
+            }
+            
+            // دالة لعرض رسائل للمستخدم
+            function showMessage(element, message, type) {
+                element.textContent = message;
+                element.classList.remove('success-message', 'error-message');
+                element.classList.add(type === 'success' ? 'success-message' : 'error-message');
+                element.style.display = 'block';
+                
+                // إخفاء الرسالة بعد 5 ثوانٍ
+                setTimeout(() => {
+                    element.style.display = 'none';
+                }, 5000);
+            }
+        });
+    </script>
+</body>
+</html>
