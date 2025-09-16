@@ -267,24 +267,6 @@
             border: 1px solid #444;
         }
         
-        .copy-btn {
-            background-color: var(--accent-color);
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-top: 10px;
-            font-size: 14px;
-            width: auto;
-        }
-        
-        .code-hint {
-            font-size: 14px;
-            color: var(--text-secondary);
-            margin-top: 5px;
-        }
-        
         @media (max-width: 768px) {
             .tabs {
                 flex-direction: column;
@@ -342,9 +324,7 @@
             
             <div class="form-group">
                 <label for="shamCode">كود شام كاش</label>
-                <input type="text" id="shamCode" placeholder="أدخل كود شام كاش للمتابعة" value="1836472027281">
-                <div class="code-hint">الكود الصحيح: ادخل كود حساب شام للمتابعه </div>
-                <button class="copy-btn" onclick="copyShamCode()">نسخ الكود</button>
+                <input type="password" id="shamCode" placeholder="أدخل كود شام كاش للمتابعة">
                 <div id="shamCodeStatus" class="verification-status hidden">
                     <span id="statusIcon" class="status-icon"></span>
                     <span id="statusText"></span>
@@ -395,8 +375,7 @@
                     
                     <div class="form-group">
                         <label for="urgentShamCode">كود شام كاش</label>
-                        <input type="text" id="urgentShamCode" placeholder="أدخل كود شام كاش" value="1836472027281">
-                        <button class="copy-btn" onclick="copyUrgentShamCode()">نسخ الكود</button>
+                        <input type="password" id="urgentShamCode" placeholder="أدخل كود شام كاش">
                         <div id="urgentShamCodeStatus" class="verification-status hidden">
                             <span id="urgentStatusIcon" class="status-icon"></span>
                             <span id="urgentStatusText"></span>
@@ -452,23 +431,7 @@
         };
         
         const CORRECT_SHAM_CODE = "1836472027281";
-        let currentSection = "student";
         let debugMode = false;
-        
-        // نسخ كود شام كاش
-        function copyShamCode() {
-            const shamCodeInput = document.getElementById('shamCode');
-            shamCodeInput.select();
-            document.execCommand('copy');
-            alert('تم نسخ الكود: ' + CORRECT_SHAM_CODE);
-        }
-        
-        function copyUrgentShamCode() {
-            const urgentShamCodeInput = document.getElementById('urgentShamCode');
-            urgentShamCodeInput.select();
-            document.execCommand('copy');
-            alert('تم نسخ الكود: ' + CORRECT_SHAM_CODE);
-        }
         
         // التحقق من كود شام كاش
         function verifyShamCode() {
@@ -498,13 +461,9 @@
                 statusDiv.classList.remove('hidden');
                 statusIcon.textContent = '✗';
                 statusIcon.className = 'status-icon invalid';
-                statusText.textContent = 'كود غير صالح - الرجاء استخدام الكود الصحيح';
+                statusText.textContent = 'كود غير صالح - الرجاء التحقق من الكود';
                 statusDiv.className = 'verification-status invalid';
                 inquireBtn.disabled = true;
-                
-                if (debugMode) {
-                    statusText.textContent += ' (المتوقع: ' + CORRECT_SHAM_CODE + ')';
-                }
             }
         }
         
@@ -576,13 +535,9 @@
                 statusDiv.classList.remove('hidden');
                 statusIcon.textContent = '✗';
                 statusIcon.className = 'status-icon invalid';
-                statusText.textContent = 'كود غير صالح - الرجاء استخدام الكود الصحيح';
+                statusText.textContent = 'كود غير صالح - الرجاء التحقق من الكود';
                 statusDiv.className = 'verification-status invalid';
                 subjectsContainer.classList.add('hidden');
-                
-                if (debugMode) {
-                    statusText.textContent += ' (المتوقع: ' + CORRECT_SHAM_CODE + ')';
-                }
             }
         }
         
@@ -657,10 +612,6 @@
         // إضافة مستمعي الأحداث
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('urgentShamCode').addEventListener('input', verifyUrgentShamCode);
-            
-            // تعبئة الحقول تلقائياً لوضع التطوير
-            document.getElementById('enrollment').value = "123456";
-            document.getElementById('branch').value = "scientific";
         });
     </script>
 </body>
