@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إنشاء مستودع جديد - GitHub</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #0d1117;
+            color: #c9d1d9;
+            line-height: 1.6;
+            padding: 16px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #21262d;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #f0f6fc;
+        }
+        
+        .nav-top {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .nav-top a {
+            color: #c9d1d9;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        .nav-top a:hover {
+            color: #58a6ff;
+        }
+        
+        .main-content {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .sidebar {
+            flex: 1;
+            background-color: #161b22;
+            border-radius: 6px;
+            padding: 16px;
+            border: 1px solid #21262d;
+        }
+        
+        .content {
+            flex: 3;
+            background-color: #161b22;
+            border-radius: 6px;
+            padding: 24px;
+            border: 1px solid #21262d;
+        }
+        
+        h1 {
+            font-size: 24px;
+            margin-bottom: 16px;
+            color: #f0f6fc;
+            border-bottom: 1px solid #21262d;
+            padding-bottom: 10px;
+        }
+        
+        h2 {
+            font-size: 18px;
+            margin: 20px 0 15px 0;
+            color: #f0f6fc;
+        }
+        
+        .form-group {
+            margin-bottom: 16px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+        
+        input[type="text"], input[type="email"], textarea, select {
+            width: 100%;
+            padding: 10px 14px;
+            background-color: #0d1117;
+            border: 1px solid #21262d;
+            border-radius: 6px;
+            color: #c9d1d9;
+            font-size: 14px;
+        }
+        
+        input[type="text"]:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #58a6ff;
+            box-shadow: 0 0 0 3px rgba(56, 139, 253, 0.15);
+        }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 15px 0;
+        }
+        
+        button {
+            background-color: #238636;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+        
+        button:hover {
+            background-color: #2ea043;
+        }
+        
+        .hr {
+            height: 1px;
+            background-color: #21262d;
+            margin: 20px 0;
+        }
+        
+        ul {
+            list-style-type: none;
+            margin: 15px 0;
+        }
+        
+        ul li {
+            padding: 8px 0;
+            border-bottom: 1px solid #21262d;
+        }
+        
+        ul li:last-child {
+            border-bottom: none;
+        }
+        
+        .favorites {
+            margin-top: 20px;
+        }
+        
+        .fav-item {
+            padding: 8px 0;
+            color: #58a6ff;
+        }
+        
+        .bottom-nav {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 30px;
+            padding: 15px;
+            border-top: 1px solid #21262d;
+        }
+        
+        .bottom-nav a {
+            color: #c9d1d9;
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 14px;
+        }
+        
+        .bottom-nav a:hover {
+            color: #58a6ff;
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .nav-top {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">GitHub</div>
+            <div class="nav-top">
+                <a href="#">الرئيسية</a>
+                <a href="#">الإشعارات</a>
+                <a href="#">استكشاف</a>
+                <a href="#">الملف الشخصي</a>
+            </div>
+        </header>
+        
+        <div class="main-content">
+            <div class="sidebar">
+                <h2>عملي</h2>
+                <ul>
+                    <li>القضايا</li>
+                    <li>طلبات السحب</li>
+                    <li>المناقشات</li>
+                    <li>المشاريع</li>
+                    <li>أفضل المستودعات</li>
+                    <li>المنظمات</li>
+                    <li>المعلقة بنجمة</li>
+                </ul>
+                
+                <div class="hr"></div>
+                
+                <div class="favorites">
+                    <h2>المفضلة</h2>
+                    <div class="fav-item">redmimhmdov-dotcom<br><strong>tamarrud</strong></div>
+                    <div class="fav-item">redmimhmdov-dotcom<br><strong>Fadh</strong></div>
+                    <div class="fav-item">redmimhmdov-dotcom</div>
+                </div>
+            </div>
+            
+            <div class="content">
+                <h1>إنشاء مستودع جديد</h1>
+                
+                <form id="create-repo-form">
+                    <div class="form-group">
+                        <label for="repo-owner">مالك المستودع *</label>
+                        <select id="repo-owner">
+                            <option value="user">اسم المستخدم الخاص بك</option>
+                            <option value="org">إحدى منظماتك</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="repo-name">اسم المستودع *</label>
+                        <input type="text" id="repo-name" placeholder="اسم المستودع" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="repo-desc">الوصف (اختياري)</label>
+                        <textarea id="repo-desc" rows="2" placeholder="وصف قصير عن المستودع"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>نوع المستودع</label>
+                        <div class="checkbox-group">
+                            <input type="radio" id="repo-public" name="repo-type" checked>
+                            <label for="repo-public">عام (يمكن للجميع رؤيته)</label>
+                        </div>
+                        <div class="checkbox-group">
+                            <input type="radio" id="repo-private" name="repo-type">
+                            <label for="repo-private">خاص (يمكنك فقط رؤيته)</label>
+                        </div>
+                    </div>
+                    
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="init-readme">
+                        <label for="init-readme">تهيئة هذا المستودع بملف README</label>
+                    </div>
+                    
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="add-gitignore">
+                        <label for="add-gitignore">إضافة ملف .gitignore</label>
+                    </div>
+                    
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="add-license">
+                        <label for="add-license">إضافة ترخيص</label>
+                    </div>
+                    
+                    <button type="submit">إنشاء المستودع</button>
+                </form>
+            </div>
+        </div>
+        
+        <div class="bottom-nav">
+            <a href="#">
+                <span>الرئيسية</span>
+            </a>
+            <a href="#">
+                <span>الإشعارات</span>
+            </a>
+            <a href="#">
+                <span>استكشاف</span>
+            </a>
+            <a href="#">
+                <span>الملف الشخصي</span>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('create-repo-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const repoName = document.getElementById('repo-name').value;
+            if (repoName) {
+                alert(`تم إنشاء المستودع "${repoName}" بنجاح!`);
+                // هنا يمكنك إضافة عملية إعادة التوجيه أو أي إجراء آخر
+            } else {
+                alert('يرجى إدخال اسم المستودع');
+            }
+        });
+    </script>
+</body>
+</html>
