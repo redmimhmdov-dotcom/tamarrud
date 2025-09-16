@@ -11,6 +11,7 @@
             --accent-color: #0f3460;
             --success-color: #4e9f3d;
             --danger-color: #da0037;
+            --warning-color: #FF9800;
             --text-light: #f0f0f0;
             --text-secondary: #b0b0b0;
         }
@@ -26,19 +27,23 @@
             background-color: var(--primary-dark);
             color: var(--text-light);
             line-height: 1.6;
+            padding: 20px;
         }
         
         .container {
             width: 100%;
-            max-width: 1200px;
+            max-width: 800px;
             margin: 0 auto;
+            background-color: var(--secondary-dark);
+            border-radius: 10px;
             padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
         }
         
         header {
-            background-color: var(--secondary-dark);
-            padding: 15px 0;
             text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
             border-bottom: 2px solid var(--accent-color);
         }
         
@@ -48,12 +53,16 @@
             color: var(--text-light);
         }
         
+        .subtitle {
+            color: var(--text-secondary);
+            margin-top: 5px;
+        }
+        
         .card {
-            background-color: var(--secondary-dark);
+            background-color: rgba(255, 255, 255, 0.05);
             border-radius: 8px;
             padding: 20px;
             margin: 20px 0;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
         }
         
         h1, h2, h3 {
@@ -62,20 +71,21 @@
         }
         
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
         
         label {
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
             color: var(--text-secondary);
+            font-weight: bold;
         }
         
         input, select, textarea {
             width: 100%;
-            padding: 12px;
-            border: 1px solid #444;
-            border-radius: 4px;
+            padding: 15px;
+            border: 2px solid #444;
+            border-radius: 6px;
             background-color: #2d3748;
             color: var(--text-light);
             font-size: 16px;
@@ -86,22 +96,30 @@
             outline: none;
             border-color: var(--accent-color);
             transform: scale(1.02);
-            box-shadow: 0 0 0 2px rgba(15, 52, 96, 0.3);
+            box-shadow: 0 0 0 3px rgba(15, 52, 96, 0.3);
         }
         
         button {
             background-color: var(--accent-color);
             color: white;
             border: none;
-            padding: 12px 20px;
-            border-radius: 4px;
+            padding: 15px 25px;
+            border-radius: 6px;
             cursor: pointer;
             font-size: 16px;
-            transition: background-color 0.3s;
+            font-weight: bold;
+            transition: all 0.3s;
+            width: 100%;
+            margin-top: 10px;
         }
         
         button:hover {
             background-color: #1e4a7e;
+            transform: translateY(-2px);
+        }
+        
+        button:active {
+            transform: translateY(0);
         }
         
         .btn-success {
@@ -118,6 +136,15 @@
         
         .btn-danger:hover {
             background-color: #a50029;
+        }
+        
+        .btn-warning {
+            background-color: var(--warning-color);
+            color: #000;
+        }
+        
+        .btn-warning:hover {
+            background-color: #e68a00;
         }
         
         .result-table {
@@ -142,37 +169,53 @@
         
         .success-message {
             color: var(--success-color);
-            padding: 10px;
+            padding: 15px;
             background-color: rgba(78, 159, 61, 0.1);
-            border-radius: 4px;
-            margin: 10px 0;
+            border-radius: 6px;
+            margin: 15px 0;
+            border-right: 4px solid var(--success-color);
         }
         
         .error-message {
             color: var(--danger-color);
-            padding: 10px;
+            padding: 15px;
             background-color: rgba(218, 0, 55, 0.1);
-            border-radius: 4px;
-            margin: 10px 0;
+            border-radius: 6px;
+            margin: 15px 0;
+            border-right: 4px solid var(--danger-color);
+        }
+        
+        .warning-message {
+            color: var(--warning-color);
+            padding: 15px;
+            background-color: rgba(255, 152, 0, 0.1);
+            border-radius: 6px;
+            margin: 15px 0;
+            border-right: 4px solid var(--warning-color);
         }
         
         .verification-status {
             display: flex;
             align-items: center;
-            margin: 10px 0;
+            margin: 15px 0;
+            padding: 12px;
+            border-radius: 6px;
+            background-color: rgba(255, 255, 255, 0.05);
         }
         
         .status-icon {
-            margin-right: 10px;
-            font-size: 20px;
+            margin-left: 10px;
+            font-size: 24px;
         }
         
         .valid {
             color: var(--success-color);
+            border-right: 4px solid var(--success-color);
         }
         
         .invalid {
             color: var(--danger-color);
+            border-right: 4px solid var(--danger-color);
         }
         
         .hidden {
@@ -182,15 +225,17 @@
         .tabs {
             display: flex;
             margin-bottom: 20px;
+            border-bottom: 2px solid var(--accent-color);
         }
         
         .tab {
-            padding: 10px 20px;
+            padding: 12px 20px;
             background-color: var(--secondary-dark);
             cursor: pointer;
             border: 1px solid #444;
             border-bottom: none;
-            border-radius: 4px 4px 0 0;
+            border-radius: 6px 6px 0 0;
+            margin-left: 5px;
         }
         
         .tab.active {
@@ -199,6 +244,9 @@
         
         .tab-content {
             display: none;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 0 0 6px 6px;
         }
         
         .tab-content.active {
@@ -215,7 +263,26 @@
         .subject-item {
             background-color: rgba(255, 255, 255, 0.05);
             padding: 15px;
+            border-radius: 6px;
+            border: 1px solid #444;
+        }
+        
+        .copy-btn {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 8px 15px;
             border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+            font-size: 14px;
+            width: auto;
+        }
+        
+        .code-hint {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-top: 5px;
         }
         
         @media (max-width: 768px) {
@@ -226,22 +293,27 @@
             .tab {
                 border-radius: 0;
                 border-bottom: 1px solid #444;
+                margin-left: 0;
+                margin-bottom: 5px;
             }
             
             .subject-list {
                 grid-template-columns: 1fr;
             }
+            
+            input, select, textarea {
+                padding: 12px;
+            }
         }
     </style>
 </head>
 <body>
-    <header>
-        <div class="container">
-            <div class="logo">مديرية الامتحانات - النظام الإلكتروني</div>
-        </div>
-    </header>
-
     <div class="container">
+        <header>
+            <div class="logo">مديرية الامتحانات - النظام الإلكتروني</div>
+            <div class="subtitle">الاستعلام عن النتائج وتقديم الاعتراضات</div>
+        </header>
+
         <!-- قسم استعلام الطلاب -->
         <div class="card" id="studentSection">
             <h2>الاستعلام عن النتائج</h2>
@@ -250,7 +322,7 @@
                 <label for="year">السنة</label>
                 <select id="year">
                     <option value="">اختر السنة</option>
-                    <option value="2025">2025</option>
+                    <option value="2025" selected>2025</option>
                 </select>
             </div>
             
@@ -270,7 +342,9 @@
             
             <div class="form-group">
                 <label for="shamCode">كود شام كاش</label>
-                <input type="text" id="shamCode" placeholder="أدخل كود شام كاش للمتابعة">
+                <input type="text" id="shamCode" placeholder="أدخل كود شام كاش للمتابعة" value="1836472027281">
+                <div class="code-hint">الكود الصحيح: ادخل كود حساب شام للمتابعه </div>
+                <button class="copy-btn" onclick="copyShamCode()">نسخ الكود</button>
                 <div id="shamCodeStatus" class="verification-status hidden">
                     <span id="statusIcon" class="status-icon"></span>
                     <span id="statusText"></span>
@@ -317,11 +391,12 @@
                 
                 <div id="urgentObjectionTab" class="tab-content">
                     <h3>تقديم اعتراض مستعجل</h3>
-                    <p>هذه الميزة متوفرة فقط لمن تقدم بطلب إلكتروني مسبق</p>
+                    <p class="warning-message">هذه الميزة متوفرة فقط لمن تقدم بطلب إلكتروني مسبق</p>
                     
                     <div class="form-group">
                         <label for="urgentShamCode">كود شام كاش</label>
-                        <input type="text" id="urgentShamCode" placeholder="أدخل كود شام كاش">
+                        <input type="text" id="urgentShamCode" placeholder="أدخل كود شام كاش" value="1836472027281">
+                        <button class="copy-btn" onclick="copyUrgentShamCode()">نسخ الكود</button>
                         <div id="urgentShamCodeStatus" class="verification-status hidden">
                             <span id="urgentStatusIcon" class="status-icon"></span>
                             <span id="urgentStatusText"></span>
@@ -339,7 +414,7 @@
                             <textarea id="objectionNotes" rows="3" placeholder="وصف المشكلة..."></textarea>
                         </div>
                         
-                        <p>ملاحظة: قيمة الرسوم لكل مادة يتم الاعتراض عليها 50 $ وسوف يتم إعلامك بالنتيجة خلال 24 إلى 48 ساعة</p>
+                        <p class="warning-message">ملاحظة: قيمة الرسوم لكل مادة يتم الاعتراض عليها 50 $ وسوف يتم إعلامك بالنتيجة خلال 24 إلى 48 ساعة</p>
                         
                         <button class="btn-success" onclick="submitUrgentObjection()">إرسال الاعتراض</button>
                     </div>
@@ -347,23 +422,8 @@
             </div>
         </div>
         
-        <!-- قسم مدخل البيانات (للمعلمين) -->
-        <div class="card hidden" id="adminSection">
-            <h2>مدخل البيانات - للمعلمين</h2>
-            
-            <div class="form-group">
-                <label for="adminPassword">كلمة المرور</label>
-                <input type="password" id="adminPassword" placeholder="أدخل كلمة المرور">
-                <button onclick="adminLogin()">دخول</button>
-            </div>
-            
-            <div id="adminPanel" class="hidden">
-                <!-- سيتم عرض لوحة التحكم هنا بعد تسجيل الدخول -->
-            </div>
-        </div>
-        
         <div style="text-align: center; margin-top: 20px;">
-            <button onclick="toggleSection()">التبديل بين واجهة الطالب ومدخل البيانات</button>
+            <button class="btn-warning" onclick="toggleDebugMode()">وضع التصحيح</button>
         </div>
     </div>
 
@@ -393,21 +453,21 @@
         
         const CORRECT_SHAM_CODE = "1836472027281";
         let currentSection = "student";
+        let debugMode = false;
         
-        // تبديل بين واجهة الطالب ومدخل البيانات
-        function toggleSection() {
-            const studentSection = document.getElementById('studentSection');
-            const adminSection = document.getElementById('adminSection');
-            
-            if (currentSection === "student") {
-                studentSection.classList.add('hidden');
-                adminSection.classList.remove('hidden');
-                currentSection = "admin";
-            } else {
-                adminSection.classList.add('hidden');
-                studentSection.classList.remove('hidden');
-                currentSection = "student";
-            }
+        // نسخ كود شام كاش
+        function copyShamCode() {
+            const shamCodeInput = document.getElementById('shamCode');
+            shamCodeInput.select();
+            document.execCommand('copy');
+            alert('تم نسخ الكود: ' + CORRECT_SHAM_CODE);
+        }
+        
+        function copyUrgentShamCode() {
+            const urgentShamCodeInput = document.getElementById('urgentShamCode');
+            urgentShamCodeInput.select();
+            document.execCommand('copy');
+            alert('تم نسخ الكود: ' + CORRECT_SHAM_CODE);
         }
         
         // التحقق من كود شام كاش
@@ -418,12 +478,18 @@
             const statusText = document.getElementById('statusText');
             const inquireBtn = document.getElementById('inquireBtn');
             
+            if (debugMode) {
+                console.log("الكود المدخل:", shamCode);
+                console.log("الكود الصحيح:", CORRECT_SHAM_CODE);
+                console.log("التطابق:", shamCode === CORRECT_SHAM_CODE);
+            }
+            
             if (shamCode === CORRECT_SHAM_CODE) {
                 statusDiv.classList.remove('hidden');
                 statusIcon.textContent = '✓';
                 statusIcon.className = 'status-icon valid';
-                statusText.textContent = 'الحساب صحيح';
-                statusText.className = 'valid';
+                statusText.textContent = 'الحساب صحيح - يمكنك المتابعة';
+                statusDiv.className = 'verification-status valid';
                 inquireBtn.disabled = false;
                 
                 // عرض النتائج بعد التحقق
@@ -432,9 +498,13 @@
                 statusDiv.classList.remove('hidden');
                 statusIcon.textContent = '✗';
                 statusIcon.className = 'status-icon invalid';
-                statusText.textContent = 'الحساب غير صالح';
-                statusText.className = 'invalid';
+                statusText.textContent = 'كود غير صالح - الرجاء استخدام الكود الصحيح';
+                statusDiv.className = 'verification-status invalid';
                 inquireBtn.disabled = true;
+                
+                if (debugMode) {
+                    statusText.textContent += ' (المتوقع: ' + CORRECT_SHAM_CODE + ')';
+                }
             }
         }
         
@@ -496,8 +566,8 @@
                 statusDiv.classList.remove('hidden');
                 statusIcon.textContent = '✓';
                 statusIcon.className = 'status-icon valid';
-                statusText.textContent = 'الحساب صحيح';
-                statusText.className = 'valid';
+                statusText.textContent = 'الحساب صحيح - يمكنك المتابعة';
+                statusDiv.className = 'verification-status valid';
                 
                 // عرض المواد للاعتراض
                 subjectsContainer.classList.remove('hidden');
@@ -506,9 +576,13 @@
                 statusDiv.classList.remove('hidden');
                 statusIcon.textContent = '✗';
                 statusIcon.className = 'status-icon invalid';
-                statusText.textContent = 'الحساب غير صالح';
-                statusText.className = 'invalid';
+                statusText.textContent = 'كود غير صالح - الرجاء استخدام الكود الصحيح';
+                statusDiv.className = 'verification-status invalid';
                 subjectsContainer.classList.add('hidden');
+                
+                if (debugMode) {
+                    statusText.textContent += ' (المتوقع: ' + CORRECT_SHAM_CODE + ')';
+                }
             }
         }
         
@@ -562,33 +636,32 @@
             document.getElementById(tabId).classList.add('active');
             
             // تفعيل الزر المحدد
-            document.querySelector(`.tab[onclick="switchTab('${tabId}')"]`).classList.add('active');
-        }
-        
-        // تسجيل الدخول للمدير
-        function adminLogin() {
-            const password = document.getElementById('adminPassword').value;
+            document.querySelectorAll('.tab').forEach(tab => {
+                if (tab.onclick && tab.onclick.toString().includes(tabId)) {
+                    tab.classList.add('active');
+                }
+            });
             
-            if (password === "mhmd") {
-                document.getElementById('adminPanel').classList.remove('hidden');
-                loadAdminPanel();
-            } else {
-                alert('كلمة المرور غير صحيحة');
+            // إذا كان تبويب الاعتراض المستعجل، تحقق من الكود
+            if (tabId === 'urgentObjectionTab') {
+                verifyUrgentShamCode();
             }
         }
         
-        // تحميل لوحة تحكم المدير
-        function loadAdminPanel() {
-            // سيتم تنفيذ هذه الوظيفة في التطبيق الكامل
-            document.getElementById('adminPanel').innerHTML = `
-                <h3>لوحة تحكم المدير</h3>
-                <p>هنا يمكنك إدارة نتائج الطلاب والاعتراضات</p>
-                <!-- سيتم إضافة المزيد من الوظائف هنا -->
-            `;
+        // تبديل وضع التصحيح
+        function toggleDebugMode() {
+            debugMode = !debugMode;
+            alert(debugMode ? "وضع التصحيح مفعل" : "وضع التصحيح معطل");
         }
         
         // إضافة مستمعي الأحداث
-        document.getElementById('urgentShamCode').addEventListener('input', verifyUrgentShamCode);
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('urgentShamCode').addEventListener('input', verifyUrgentShamCode);
+            
+            // تعبئة الحقول تلقائياً لوضع التطوير
+            document.getElementById('enrollment').value = "123456";
+            document.getElementById('branch').value = "scientific";
+        });
     </script>
 </body>
 </html>
