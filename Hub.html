@@ -3,200 +3,288 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>إنشاء مستودع جديد - GitHub</title>
+    <title>نظام إدارة النتائج الامتحانية</title>
     <style>
+        :root {
+            --primary-dark: #1a1a2e;
+            --secondary-dark: #16213e;
+            --accent-color: #0f3460;
+            --success-color: #4e9f3d;
+            --danger-color: #da0037;
+            --warning-color: #FF9800;
+            --text-light: #f0f0f0;
+            --text-secondary: #b0b0b0;
+        }
+        
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         body {
-            background-color: #0d1117;
-            color: #c9d1d9;
+            background-color: var(--primary-dark);
+            color: var(--text-light);
             line-height: 1.6;
-            padding: 16px;
-            max-width: 1000px;
-            margin: 0 auto;
+            padding: 20px;
         }
         
         .container {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: var(--secondary-dark);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
         }
         
         header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 0;
-            border-bottom: 1px solid #21262d;
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--accent-color);
         }
         
         .logo {
             font-size: 24px;
             font-weight: bold;
-            color: #f0f6fc;
+            color: var(--text-light);
         }
         
-        .nav-top {
-            display: flex;
-            gap: 15px;
+        .subtitle {
+            color: var(--text-secondary);
+            margin-top: 5px;
         }
         
-        .nav-top a {
-            color: #c9d1d9;
-            text-decoration: none;
-            font-size: 14px;
+        .card {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
         }
         
-        .nav-top a:hover {
-            color: #58a6ff;
-        }
-        
-        .main-content {
-            display: flex;
-            gap: 20px;
-        }
-        
-        .sidebar {
-            flex: 1;
-            background-color: #161b22;
-            border-radius: 6px;
-            padding: 16px;
-            border: 1px solid #21262d;
-        }
-        
-        .content {
-            flex: 3;
-            background-color: #161b22;
-            border-radius: 6px;
-            padding: 24px;
-            border: 1px solid #21262d;
-        }
-        
-        h1 {
-            font-size: 24px;
-            margin-bottom: 16px;
-            color: #f0f6fc;
-            border-bottom: 1px solid #21262d;
-            padding-bottom: 10px;
-        }
-        
-        h2 {
-            font-size: 18px;
-            margin: 20px 0 15px 0;
-            color: #f0f6fc;
+        h1, h2, h3 {
+            color: var(--text-light);
+            margin-bottom: 15px;
         }
         
         .form-group {
-            margin-bottom: 16px;
+            margin-bottom: 20px;
         }
         
         label {
             display: block;
-            margin-bottom: 6px;
-            font-weight: 500;
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+            font-weight: bold;
         }
         
-        input[type="text"], input[type="email"], textarea, select {
+        input, select, textarea {
             width: 100%;
-            padding: 10px 14px;
-            background-color: #0d1117;
-            border: 1px solid #21262d;
+            padding: 15px;
+            border: 2px solid #444;
             border-radius: 6px;
-            color: #c9d1d9;
-            font-size: 14px;
+            background-color: #2d3748;
+            color: var(--text-light);
+            font-size: 16px;
+            transition: all 0.3s ease;
         }
         
-        input[type="text"]:focus, textarea:focus, select:focus {
+        input:focus, select:focus, textarea:focus {
             outline: none;
-            border-color: #58a6ff;
-            box-shadow: 0 0 0 3px rgba(56, 139, 253, 0.15);
-        }
-        
-        .checkbox-group {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin: 15px 0;
+            border-color: var(--accent-color);
+            transform: scale(1.02);
+            box-shadow: 0 0 0 3px rgba(15, 52, 96, 0.3);
         }
         
         button {
-            background-color: #238636;
+            background-color: var(--accent-color);
             color: white;
             border: none;
-            padding: 10px 20px;
+            padding: 15px 25px;
             border-radius: 6px;
-            font-weight: 500;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s;
+            width: 100%;
             margin-top: 10px;
         }
         
         button:hover {
-            background-color: #2ea043;
+            background-color: #1e4a7e;
+            transform: translateY(-2px);
         }
         
-        .hr {
-            height: 1px;
-            background-color: #21262d;
+        button:active {
+            transform: translateY(0);
+        }
+        
+        .btn-success {
+            background-color: var(--success-color);
+        }
+        
+        .btn-success:hover {
+            background-color: #3d7a2f;
+        }
+        
+        .btn-danger {
+            background-color: var(--danger-color);
+        }
+        
+        .btn-danger:hover {
+            background-color: #a50029;
+        }
+        
+        .btn-warning {
+            background-color: var(--warning-color);
+            color: #000;
+        }
+        
+        .btn-warning:hover {
+            background-color: #e68a00;
+        }
+        
+        .result-table {
+            width: 100%;
+            border-collapse: collapse;
             margin: 20px 0;
         }
         
-        ul {
-            list-style-type: none;
-            margin: 15px 0;
+        .result-table th, .result-table td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #444;
         }
         
-        ul li {
-            padding: 8px 0;
-            border-bottom: 1px solid #21262d;
+        .result-table th {
+            background-color: var(--accent-color);
         }
         
-        ul li:last-child {
-            border-bottom: none;
+        .result-table tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.05);
         }
         
-        .favorites {
-            margin-top: 20px;
-        }
-        
-        .fav-item {
-            padding: 8px 0;
-            color: #58a6ff;
-        }
-        
-        .bottom-nav {
-            display: flex;
-            justify-content: space-around;
-            margin-top: 30px;
+        .success-message {
+            color: var(--success-color);
             padding: 15px;
-            border-top: 1px solid #21262d;
+            background-color: rgba(78, 159, 61, 0.1);
+            border-radius: 6px;
+            margin: 15px 0;
+            border-right: 4px solid var(--success-color);
         }
         
-        .bottom-nav a {
-            color: #c9d1d9;
-            text-decoration: none;
+        .error-message {
+            color: var(--danger-color);
+            padding: 15px;
+            background-color: rgba(218, 0, 55, 0.1);
+            border-radius: 6px;
+            margin: 15px 0;
+            border-right: 4px solid var(--danger-color);
+        }
+        
+        .warning-message {
+            color: var(--warning-color);
+            padding: 15px;
+            background-color: rgba(255, 152, 0, 0.1);
+            border-radius: 6px;
+            margin: 15px 0;
+            border-right: 4px solid var(--warning-color);
+        }
+        
+        .verification-status {
             display: flex;
-            flex-direction: column;
             align-items: center;
-            font-size: 14px;
+            margin: 15px 0;
+            padding: 12px;
+            border-radius: 6px;
+            background-color: rgba(255, 255, 255, 0.05);
         }
         
-        .bottom-nav a:hover {
-            color: #58a6ff;
+        .status-icon {
+            margin-left: 10px;
+            font-size: 24px;
+        }
+        
+        .valid {
+            color: var(--success-color);
+            border-right: 4px solid var(--success-color);
+        }
+        
+        .invalid {
+            color: var(--danger-color);
+            border-right: 4px solid var(--danger-color);
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--accent-color);
+        }
+        
+        .tab {
+            padding: 12px 20px;
+            background-color: var(--secondary-dark);
+            cursor: pointer;
+            border: 1px solid #444;
+            border-bottom: none;
+            border-radius: 6px 6px 0 0;
+            margin-left: 5px;
+        }
+        
+        .tab.active {
+            background-color: var(--accent-color);
+        }
+        
+        .tab-content {
+            display: none;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 0 0 6px 6px;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .subject-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .subject-item {
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px solid #444;
         }
         
         @media (max-width: 768px) {
-            .main-content {
+            .tabs {
                 flex-direction: column;
             }
             
-            .nav-top {
-                display: none;
+            .tab {
+                border-radius: 0;
+                border-bottom: 1px solid #444;
+                margin-left: 0;
+                margin-bottom: 5px;
+            }
+            
+            .subject-list {
+                grid-template-columns: 1fr;
+            }
+            
+            input, select, textarea {
+                padding: 12px;
             }
         }
     </style>
@@ -204,118 +292,326 @@
 <body>
     <div class="container">
         <header>
-            <div class="logo">GitHub</div>
-            <div class="nav-top">
-                <a href="#">الرئيسية</a>
-                <a href="#">الإشعارات</a>
-                <a href="#">استكشاف</a>
-                <a href="#">الملف الشخصي</a>
-            </div>
+            <div class="logo">مديرية الامتحانات - النظام الإلكتروني</div>
+            <div class="subtitle">الاستعلام عن النتائج وتقديم الاعتراضات</div>
         </header>
-        
-        <div class="main-content">
-            <div class="sidebar">
-                <h2>عملي</h2>
-                <ul>
-                    <li>القضايا</li>
-                    <li>طلبات السحب</li>
-                    <li>المناقشات</li>
-                    <li>المشاريع</li>
-                    <li>أفضل المستودعات</li>
-                    <li>المنظمات</li>
-                    <li>المعلقة بنجمة</li>
-                </ul>
-                
-                <div class="hr"></div>
-                
-                <div class="favorites">
-                    <h2>المفضلة</h2>
-                    <div class="fav-item">redmimhmdov-dotcom<br><strong>tamarrud</strong></div>
-                    <div class="fav-item">redmimhmdov-dotcom<br><strong>Fadh</strong></div>
-                    <div class="fav-item">redmimhmdov-dotcom</div>
+
+        <!-- قسم استعلام الطلاب -->
+        <div class="card" id="studentSection">
+            <h2>الاستعلام عن النتائج</h2>
+            
+            <div class="form-group">
+                <label for="year">السنة</label>
+                <select id="year">
+                    <option value="">اختر السنة</option>
+                    <option value="2025" selected>2025</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="branch">الشهادة</label>
+                <select id="branch">
+                    <option value="">اختر الفرع</option>
+                    <option value="scientific">العلمي</option>
+                    <option value="literary">الأدبي</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="enrollment">رقم الاكتتاب</label>
+                <input type="text" id="enrollment" placeholder="أدخل رقم الاكتتاب">
+            </div>
+            
+            <div class="form-group">
+                <label for="shamCode">كود شام كاش</label>
+                <input type="password" id="shamCode" placeholder="أدخل كود شام كاش للمتابعة">
+                <div id="shamCodeStatus" class="verification-status hidden">
+                    <span id="statusIcon" class="status-icon"></span>
+                    <span id="statusText"></span>
                 </div>
             </div>
             
-            <div class="content">
-                <h1>إنشاء مستودع جديد</h1>
+            <button id="inquireBtn" onclick="verifyShamCode()">استعلام</button>
+            
+            <div id="resultContainer" class="hidden">
+                <h3>النتيجة الامتحانية</h3>
+                <div id="resultMessage"></div>
+                <table class="result-table">
+                    <thead>
+                        <tr>
+                            <th>المادة</th>
+                            <th>الدرجة</th>
+                            <th>الدرجة العظمى والدنيا</th>
+                        </tr>
+                    </thead>
+                    <tbody id="resultTableBody">
+                        <!-- سيتم ملؤها بالبيانات -->
+                    </tbody>
+                </table>
                 
-                <form id="create-repo-form">
-                    <div class="form-group">
-                        <label for="repo-owner">مالك المستودع *</label>
-                        <select id="repo-owner">
-                            <option value="user">اسم المستخدم الخاص بك</option>
-                            <option value="org">إحدى منظماتك</option>
-                        </select>
-                    </div>
+                <div id="passMessage" class="success-message hidden">
+                    <h3>مبروك! لقد نجحت</h3>
+                    <p>تهانينا على نجاحك، نتمنى لك دوام التوفيق والنجاح في مسيرتك التعليمية.</p>
+                </div>
+                
+                <div id="failMessage" class="error-message hidden">
+                    <h3>للأسف لم تحقق النجاح هذه المرة</h3>
+                    <p>لا تيأس، الطريق أمامك طويل وهذه مجرد محطة، استفد من أخطائك وواصل السعي نحو النجاح.</p>
+                </div>
+                
+                <div class="tabs">
+                    <div class="tab active" onclick="switchTab('objectionTab')">نتائج الاعتراضات</div>
+                    <div class="tab" onclick="switchTab('urgentObjectionTab')">تقديم اعتراض مستعجل</div>
+                </div>
+                
+                <div id="objectionTab" class="tab-content active">
+                    <h3>نتائج الاعتراضات</h3>
+                    <div id="objectionResult"></div>
+                </div>
+                
+                <div id="urgentObjectionTab" class="tab-content">
+                    <h3>تقديم اعتراض مستعجل</h3>
+                    <p class="warning-message">هذه الميزة متوفرة فقط لمن تقدم بطلب إلكتروني مسبق</p>
                     
                     <div class="form-group">
-                        <label for="repo-name">اسم المستودع *</label>
-                        <input type="text" id="repo-name" placeholder="اسم المستودع" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="repo-desc">الوصف (اختياري)</label>
-                        <textarea id="repo-desc" rows="2" placeholder="وصف قصير عن المستودع"></textarea>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>نوع المستودع</label>
-                        <div class="checkbox-group">
-                            <input type="radio" id="repo-public" name="repo-type" checked>
-                            <label for="repo-public">عام (يمكن للجميع رؤيته)</label>
+                        <label for="urgentShamCode">كود شام كاش</label>
+                        <input type="password" id="urgentShamCode" placeholder="أدخل كود شام كاش">
+                        <div id="urgentShamCodeStatus" class="verification-status hidden">
+                            <span id="urgentStatusIcon" class="status-icon"></span>
+                            <span id="urgentStatusText"></span>
                         </div>
-                        <div class="checkbox-group">
-                            <input type="radio" id="repo-private" name="repo-type">
-                            <label for="repo-private">خاص (يمكنك فقط رؤيته)</label>
+                    </div>
+                    
+                    <div id="subjectsContainer" class="hidden">
+                        <h4>المواد المعترض عليها</h4>
+                        <div class="subject-list" id="subjectList">
+                            <!-- سيتم ملؤها بالبيانات -->
                         </div>
+                        
+                        <div class="form-group">
+                            <label for="objectionNotes">اشرح المشكلة بشكل مختصر</label>
+                            <textarea id="objectionNotes" rows="3" placeholder="وصف المشكلة..."></textarea>
+                        </div>
+                        
+                        <p class="warning-message">ملاحظة: قيمة الرسوم لكل مادة يتم الاعتراض عليها 50 $ وسوف يتم إعلامك بالنتيجة خلال 24 إلى 48 ساعة</p>
+                        
+                        <button class="btn-success" onclick="submitUrgentObjection()">إرسال الاعتراض</button>
                     </div>
-                    
-                    <div class="checkbox-group">
-                        <input type="checkbox" id="init-readme">
-                        <label for="init-readme">تهيئة هذا المستودع بملف README</label>
-                    </div>
-                    
-                    <div class="checkbox-group">
-                        <input type="checkbox" id="add-gitignore">
-                        <label for="add-gitignore">إضافة ملف .gitignore</label>
-                    </div>
-                    
-                    <div class="checkbox-group">
-                        <input type="checkbox" id="add-license">
-                        <label for="add-license">إضافة ترخيص</label>
-                    </div>
-                    
-                    <button type="submit">إنشاء المستودع</button>
-                </form>
+                </div>
             </div>
         </div>
         
-        <div class="bottom-nav">
-            <a href="#">
-                <span>الرئيسية</span>
-            </a>
-            <a href="#">
-                <span>الإشعارات</span>
-            </a>
-            <a href="#">
-                <span>استكشاف</span>
-            </a>
-            <a href="#">
-                <span>الملف الشخصي</span>
-            </a>
+        <div style="text-align: center; margin-top: 20px;">
+            <button class="btn-warning" onclick="toggleDebugMode()">وضع التصحيح</button>
         </div>
     </div>
 
     <script>
-        document.getElementById('create-repo-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const repoName = document.getElementById('repo-name').value;
-            if (repoName) {
-                alert(`تم إنشاء المستودع "${repoName}" بنجاح!`);
-                // هنا يمكنك إضافة عملية إعادة التوجيه أو أي إجراء آخر
-            } else {
-                alert('يرجى إدخال اسم المستودع');
+        // بيانات المواد لكل فرع
+        const subjects = {
+            scientific: [
+                { name: "الفيزياء", max: 170, min: 50 },
+                { name: "اللغة الإنكليزية", max: 240, min: 50 },
+                { name: "علم الأحياء", max: 180, min: 50 },
+                { name: "اللغة العربية", max: 150, min: 50 },
+                { name: "الرياضيات", max: 340, min: 50 },
+                { name: "الكيمياء", max: 120, min: 50 },
+                { name: "التربية الدينية", max: 85, min: 50 },
+                { name: "اللغة الفرنسية", max: 175, min: 50 }
+            ],
+            literary: [
+                { name: "اللغة العربية", max: 200, min: 50 },
+                { name: "اللغة الإنكليزية", max: 200, min: 50 },
+                { name: "التاريخ", max: 150, min: 50 },
+                { name: "الجغرافيا", max: 150, min: 50 },
+                { name: "الفلسفة", max: 150, min: 50 },
+                { name: "التربية الدينية", max: 100, min: 50 },
+                { name: "اللغة الفرنسية", max: 150, min: 50 }
+            ]
+        };
+        
+        const CORRECT_SHAM_CODE = "1836472027281";
+        let debugMode = false;
+        
+        // التحقق من كود شام كاش
+        function verifyShamCode() {
+            const shamCode = document.getElementById('shamCode').value;
+            const statusDiv = document.getElementById('shamCodeStatus');
+            const statusIcon = document.getElementById('statusIcon');
+            const statusText = document.getElementById('statusText');
+            const inquireBtn = document.getElementById('inquireBtn');
+            
+            if (debugMode) {
+                console.log("الكود المدخل:", shamCode);
+                console.log("الكود الصحيح:", CORRECT_SHAM_CODE);
+                console.log("التطابق:", shamCode === CORRECT_SHAM_CODE);
             }
+            
+            if (shamCode === CORRECT_SHAM_CODE) {
+                statusDiv.classList.remove('hidden');
+                statusIcon.textContent = '✓';
+                statusIcon.className = 'status-icon valid';
+                statusText.textContent = 'الحساب صحيح - يمكنك المتابعة';
+                statusDiv.className = 'verification-status valid';
+                inquireBtn.disabled = false;
+                
+                // عرض النتائج بعد التحقق
+                showResults();
+            } else {
+                statusDiv.classList.remove('hidden');
+                statusIcon.textContent = '✗';
+                statusIcon.className = 'status-icon invalid';
+                statusText.textContent = 'كود غير صالح - الرجاء التحقق من الكود';
+                statusDiv.className = 'verification-status invalid';
+                inquireBtn.disabled = true;
+            }
+        }
+        
+        // عرض النتائج
+        function showResults() {
+            const branch = document.getElementById('branch').value;
+            const enrollment = document.getElementById('enrollment').value;
+            
+            if (!branch || !enrollment) {
+                alert('يرجى اختيار الفرع وإدخال رقم الاكتتاب');
+                return;
+            }
+            
+            const resultContainer = document.getElementById('resultContainer');
+            const resultTableBody = document.getElementById('resultTableBody');
+            const passMessage = document.getElementById('passMessage');
+            const failMessage = document.getElementById('failMessage');
+            
+            resultContainer.classList.remove('hidden');
+            resultTableBody.innerHTML = '';
+            
+            // توليد نتائج عشوائية (ناجح أو راسب)
+            const isPass = Math.random() > 0.5;
+            
+            if (isPass) {
+                passMessage.classList.remove('hidden');
+                failMessage.classList.add('hidden');
+            } else {
+                passMessage.classList.add('hidden');
+                failMessage.classList.remove('hidden');
+            }
+            
+            // ملء الجدول بالنتائج
+            subjects[branch].forEach(subject => {
+                const row = document.createElement('tr');
+                
+                // درجة عشوائية بين الأدنى والأعلى
+                const score = Math.floor(Math.random() * (subject.max - subject.min + 1)) + subject.min;
+                
+                row.innerHTML = `
+                    <td>${subject.name}</td>
+                    <td>${score}</td>
+                    <td>${subject.max} / ${subject.min}</td>
+                `;
+                
+                resultTableBody.appendChild(row);
+            });
+        }
+        
+        // التحقق من كود شام كاش للاعتراض المستعجل
+        function verifyUrgentShamCode() {
+            const shamCode = document.getElementById('urgentShamCode').value;
+            const statusDiv = document.getElementById('urgentShamCodeStatus');
+            const statusIcon = document.getElementById('urgentStatusIcon');
+            const statusText = document.getElementById('urgentStatusText');
+            const subjectsContainer = document.getElementById('subjectsContainer');
+            
+            if (shamCode === CORRECT_SHAM_CODE) {
+                statusDiv.classList.remove('hidden');
+                statusIcon.textContent = '✓';
+                statusIcon.className = 'status-icon valid';
+                statusText.textContent = 'الحساب صحيح - يمكنك المتابعة';
+                statusDiv.className = 'verification-status valid';
+                
+                // عرض المواد للاعتراض
+                subjectsContainer.classList.remove('hidden');
+                displaySubjectsForObjection();
+            } else {
+                statusDiv.classList.remove('hidden');
+                statusIcon.textContent = '✗';
+                statusIcon.className = 'status-icon invalid';
+                statusText.textContent = 'كود غير صالح - الرجاء التحقق من الكود';
+                statusDiv.className = 'verification-status invalid';
+                subjectsContainer.classList.add('hidden');
+            }
+        }
+        
+        // عرض المواد للاعتراض
+        function displaySubjectsForObjection() {
+            const branch = document.getElementById('branch').value;
+            const subjectList = document.getElementById('subjectList');
+            
+            subjectList.innerHTML = '';
+            
+            subjects[branch].forEach(subject => {
+                const subjectItem = document.createElement('div');
+                subjectItem.className = 'subject-item';
+                subjectItem.innerHTML = `
+                    <input type="checkbox" id="subject-${subject.name}" name="objectionSubjects" value="${subject.name}">
+                    <label for="subject-${subject.name}">${subject.name}</label>
+                `;
+                subjectList.appendChild(subjectItem);
+            });
+        }
+        
+        // إرسال الاعتراض المستعجل
+        function submitUrgentObjection() {
+            const selectedSubjects = Array.from(document.querySelectorAll('input[name="objectionSubjects"]:checked')).map(cb => cb.value);
+            const notes = document.getElementById('objectionNotes').value;
+            
+            if (selectedSubjects.length === 0) {
+                alert('يرجى اختيار مادة واحدة على الأقل للاعتراض');
+                return;
+            }
+            
+            alert(`تم تقديم الاعتراض على المواد: ${selectedSubjects.join(', ')}\n\nملاحظات: ${notes}\n\nسيتم مراجعة اعتراضك خلال 24-48 ساعة.`);
+            
+            // الانتقال إلى تبويب نتائج الاعتراضات
+            switchTab('objectionTab');
+        }
+        
+        // تبديل بين التبويبات
+        function switchTab(tabId) {
+            // إخفاء جميع المحتويات
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // إلغاء تنشيط جميع التبويبات
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // تفعيل التبويب المحدد
+            document.getElementById(tabId).classList.add('active');
+            
+            // تفعيل الزر المحدد
+            document.querySelectorAll('.tab').forEach(tab => {
+                if (tab.onclick && tab.onclick.toString().includes(tabId)) {
+                    tab.classList.add('active');
+                }
+            });
+            
+            // إذا كان تبويب الاعتراض المستعجل، تحقق من الكود
+            if (tabId === 'urgentObjectionTab') {
+                verifyUrgentShamCode();
+            }
+        }
+        
+        // تبديل وضع التصحيح
+        function toggleDebugMode() {
+            debugMode = !debugMode;
+            alert(debugMode ? "وضع التصحيح مفعل" : "وضع التصحيح معطل");
+        }
+        
+        // إضافة مستمعي الأحداث
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('urgentShamCode').addEventListener('input', verifyUrgentShamCode);
         });
     </script>
 </body>
