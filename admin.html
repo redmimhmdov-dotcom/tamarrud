@@ -3,71 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مديرية الامتحانات - مدخل البيانات</title>
+    <title>نظام النتائج - الاستعلام</title>
     <style>
-        :root {
-            --primary-dark: #1a1a2e;
-            --secondary-dark: #16213e;
-            --accent-color: #0f3460;
-            --success-color: #4e9f3d;
-            --danger-color: #da0037;
-            --warning-color: #FF9800;
-            --text-light: #f0f0f0;
-            --text-secondary: #b0b0b0;
-        }
-        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Arial', sans-serif;
         }
         
         body {
-            background-color: var(--primary-dark);
-            color: var(--text-light);
-            line-height: 1.6;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
             padding: 20px;
         }
         
         .container {
-            width: 100%;
-            max-width: 1000px;
+            max-width: 500px;
             margin: 0 auto;
-            background-color: var(--secondary-dark);
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
         
-        header {
+        .header {
             text-align: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid var(--accent-color);
+            margin-bottom: 30px;
         }
         
-        .logo {
-            font-size: 24px;
+        .header h1 {
+            color: #333;
+            font-size: 28px;
             font-weight: bold;
-            color: var(--text-light);
+            margin-bottom: 10px;
         }
         
-        .subtitle {
-            color: var(--text-secondary);
-            margin-top: 5px;
-        }
-        
-        .admin-panel {
-            background-color: rgba(255, 255, 255, 0.05);
-            border-radius: 8px;
-            padding: 20px;
-            margin: 20px 0;
-        }
-        
-        h1, h2, h3 {
-            color: var(--text-light);
-            margin-bottom: 15px;
+        .header p {
+            color: #666;
+            font-size: 16px;
+            font-weight: 600;
         }
         
         .form-group {
@@ -76,606 +51,249 @@
         
         label {
             display: block;
-            margin-bottom: 8px;
-            color: var(--text-secondary);
             font-weight: bold;
+            margin-bottom: 8px;
+            color: #333;
+            font-size: 16px;
         }
         
-        input, select, textarea {
+        input, select {
             width: 100%;
             padding: 15px;
-            border: 2px solid #444;
-            border-radius: 6px;
-            background-color: #2d3748;
-            color: var(--text-light);
-            font-size: 16px;
-            transition: all 0.3s ease;
-        }
-        
-        input:focus, select:focus, textarea:focus {
-            outline: none;
-            border-color: var(--accent-color);
-            transform: scale(1.02);
-            box-shadow: 0 0 0 3px rgba(15, 52, 96, 0.3);
-        }
-        
-        button {
-            background-color: var(--accent-color);
-            color: white;
-            border: none;
-            padding: 15px 25px;
-            border-radius: 6px;
-            cursor: pointer;
+            border: 2px solid #ddd;
+            border-radius: 10px;
             font-size: 16px;
             font-weight: bold;
-            transition: all 0.3s;
-            margin: 5px;
+            transition: border-color 0.3s;
         }
         
-        button:hover {
-            background-color: #1e4a7e;
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .btn:hover {
             transform: translateY(-2px);
         }
         
-        button:active {
-            transform: translateY(0);
-        }
-        
-        .btn-success {
-            background-color: var(--success-color);
-        }
-        
-        .btn-success:hover {
-            background-color: #3d7a2f;
-        }
-        
-        .btn-danger {
-            background-color: var(--danger-color);
-        }
-        
-        .btn-danger:hover {
-            background-color: #a50029;
-        }
-        
-        .btn-warning {
-            background-color: var(--warning-color);
-            color: #000;
-        }
-        
-        .btn-warning:hover {
-            background-color: #e68a00;
-        }
-        
-        .result-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-        }
-        
-        .result-table th, .result-table td {
-            padding: 12px;
-            text-align: center;
-            border: 1px solid #444;
-        }
-        
-        .result-table th {
-            background-color: var(--accent-color);
-        }
-        
-        .result-table tr:nth-child(even) {
-            background-color: rgba(255, 255, 255, 0.05);
-        }
-        
-        .success-message {
-            color: var(--success-color);
-            padding: 15px;
-            background-color: rgba(78, 159, 61, 0.1);
-            border-radius: 6px;
-            margin: 15px 0;
-            border-right: 4px solid var(--success-color);
-        }
-        
-        .error-message {
-            color: var(--danger-color);
-            padding: 15px;
-            background-color: rgba(218, 0, 55, 0.1);
-            border-radius: 6px;
-            margin: 15px 0;
-            border-right: 4px solid var(--danger-color);
-        }
-        
-        .warning-message {
-            color: var(--warning-color);
-            padding: 15px;
-            background-color: rgba(255, 152, 0, 0.1);
-            border-radius: 6px;
-            margin: 15px 0;
-            border-right: 4px solid var(--warning-color);
-        }
-        
-        .hidden {
-            display: none;
-        }
-        
-        .tabs {
-            display: flex;
-            margin-bottom: 20px;
-            border-bottom: 2px solid var(--accent-color);
-        }
-        
-        .tab {
-            padding: 12px 20px;
-            background-color: var(--secondary-dark);
-            cursor: pointer;
-            border: 1px solid #444;
-            border-bottom: none;
-            border-radius: 6px 6px 0 0;
-            margin-left: 5px;
-        }
-        
-        .tab.active {
-            background-color: var(--accent-color);
-        }
-        
-        .tab-content {
-            display: none;
+        .result-card {
+            margin-top: 30px;
             padding: 20px;
-            background-color: rgba(255, 255, 255, 0.05);
-            border-radius: 0 0 6px 6px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            border: 2px solid #e9ecef;
+            display: none;
         }
         
-        .tab-content.active {
-            display: block;
-        }
-        
-        .subject-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 15px;
-            margin: 20px 0;
-        }
-        
-        .subject-item {
-            background-color: rgba(255, 255, 255, 0.05);
-            padding: 15px;
-            border-radius: 6px;
-            border: 1px solid #444;
-        }
-        
-        .student-list {
-            max-height: 400px;
-            overflow-y: auto;
-            margin: 20px 0;
-        }
-        
-        .student-item {
-            background-color: rgba(255, 255, 255, 0.05);
-            padding: 15px;
-            border-radius: 6px;
-            margin: 10px 0;
-            border: 1px solid #444;
-        }
-        
-        .action-buttons {
+        .result-item {
             display: flex;
-            gap: 10px;
-            margin-top: 15px;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #dee2e6;
         }
         
-        @media (max-width: 768px) {
-            .tabs {
-                flex-direction: column;
-            }
-            
-            .tab {
-                border-radius: 0;
-                border-bottom: 1px solid #444;
-                margin-left: 0;
-                margin-bottom: 5px;
-            }
-            
-            .subject-list {
-                grid-template-columns: 1fr;
-            }
-            
-            .action-buttons {
-                flex-direction: column;
-            }
+        .result-label {
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .result-value {
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .subject-result {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .subject-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .subject-name {
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .success-badge {
+            background: #4CAF50;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        .fail-badge {
+            background: #f44336;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        .overall-result {
+            text-align: center;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        
+        .overall-success {
+            background: #4CAF50;
+            color: white;
+        }
+        
+        .overall-fail {
+            background: #f44336;
+            color: white;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <header>
-            <div class="logo">مديرية الامتحانات - مدخل البيانات</div>
-            <div class="subtitle">لوحة تحكم المعلمين - إدارة النتائج والاعتراضات</div>
-        </header>
-
-        <div class="admin-panel">
+        <div class="header">
+            <h1>🔍 نظام النتائج - الاستعلام</h1>
+            <p>استعلام عن نتيجة الاعتراض</p>
+        </div>
+        
+        <form id="searchForm">
             <div class="form-group">
-                <label for="adminPassword">كلمة المرور</label>
-                <input type="password" id="adminPassword" placeholder="أدخل كلمة المرور">
-                <button onclick="adminLogin()">دخول</button>
+                <label for="searchName">الاسم الثلاثي:</label>
+                <input type="text" id="searchName" required>
             </div>
             
-            <div id="adminDashboard" class="hidden">
-                <h2>لوحة تحكم المدير</h2>
-                
-                <div class="tabs">
-                    <div class="tab active" onclick="switchTab('addStudentTab')">إضافة طالب</div>
-                    <div class="tab" onclick="switchTab('manageStudentsTab')">إدارة الطلاب</div>
-                    <div class="tab" onclick="switchTab('objectionsTab')">الاعتراضات</div>
-                    <div class="tab" onclick="switchTab('settingsTab')">الإعدادات</div>
-                </div>
-                
-                <!-- تبويب إضافة طالب -->
-                <div id="addStudentTab" class="tab-content active">
-                    <h3>إضافة طالب جديد</h3>
-                    
-                    <div class="form-group">
-                        <label for="studentName">الاسم الثلاثي</label>
-                        <input type="text" id="studentName" placeholder="الاسم الكامل للطالب">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="studentNumber">رقم الاكتتاب</label>
-                        <input type="text" id="studentNumber" placeholder="رقم الاكتتاب">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="motherName">اسم الأم</label>
-                        <input type="text" id="motherName" placeholder="اسم الأم ثلاثي">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="schoolName">اسم المدرسة</label>
-                        <input type="text" id="schoolName" placeholder="اسم المدرسة">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="classroom">القاعة</label>
-                        <input type="text" id="classroom" placeholder="رقم القاعة">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="studentBranch">الفرع</label>
-                        <select id="studentBranch">
-                            <option value="">اختر الفرع</option>
-                            <option value="scientific">العلمي</option>
-                            <option value="literary">الأدبي</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="successRate">حالة النجاح/الرسوب</label>
-                        <select id="successRate">
-                            <option value="pass">ناجح</option>
-                            <option value="fail">راسب</option>
-                        </select>
-                    </div>
-                    
-                    <h4>الدرجات</h4>
-                    <div id="subjectsContainer"></div>
-                    
-                    <div class="action-buttons">
-                        <button class="btn-success" onclick="saveStudent()">حفظ الطالب</button>
-                        <button onclick="clearForm()">مسح النموذج</button>
-                    </div>
-                </div>
-                
-                <!-- تبويب إدارة الطلاب -->
-                <div id="manageStudentsTab" class="tab-content">
-                    <h3>إدارة الطلاب</h3>
-                    
-                    <div class="form-group">
-                        <input type="text" id="searchStudent" placeholder="ابحث بالاسم أو رقم الاكتتاب" onkeyup="searchStudents()">
-                    </div>
-                    
-                    <div class="student-list" id="studentsList">
-                        <!-- سيتم ملؤها بالطلاب -->
-                    </div>
-                </div>
-                
-                <!-- تبويب الاعتراضات -->
-                <div id="objectionsTab" class="tab-content">
-                    <h3>إدارة الاعتراضات</h3>
-                    
-                    <div class="form-group">
-                        <input type="text" id="searchObjection" placeholder="ابحث في الاعتراضات" onkeyup="searchObjections()">
-                    </div>
-                    
-                    <div id="objectionsList">
-                        <!-- سيتم ملؤها بالاعتراضات -->
-                    </div>
-                </div>
-                
-                <!-- تبويب الإعدادات -->
-                <div id="settingsTab" class="tab-content">
-                    <h3>الإعدادات</h3>
-                    
-                    <div class="form-group">
-                        <label for="adminPasswordChange">كلمة المرور الجديدة</label>
-                        <input type="password" id="adminPasswordChange" placeholder="كلمة المرور الجديدة">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="adminPasswordConfirm">تأكيد كلمة المرور</label>
-                        <input type="password" id="adminPasswordConfirm" placeholder="تأكيد كلمة المرور">
-                    </div>
-                    
-                    <button class="btn-success" onclick="changePassword()">تغيير كلمة المرور</button>
-                    
-                    <div class="warning-message" style="margin-top: 20px;">
-                        <h4>تصدير البيانات</h4>
-                        <p>يمكنك تصدير جميع البيانات إلى ملف JSON</p>
-                        <button onclick="exportData()">تصدير البيانات</button>
-                    </div>
-                </div>
+            <div class="form-group">
+                <label for="searchBranch">الفرع:</label>
+                <select id="searchBranch" required>
+                    <option value="">اختر الفرع</option>
+                    <option value="علمي">علمي</option>
+                    <option value="أدبي">أدبي</option>
+                </select>
             </div>
+            
+            <div class="form-group">
+                <label for="searchSubscription">رقم الاكتتاب:</label>
+                <input type="text" id="searchSubscription" required>
+            </div>
+            
+            <button type="submit" class="btn">بحث عن النتيجة</button>
+        </form>
+        
+        <div id="resultCard" class="result-card">
+            <div class="result-item">
+                <span class="result-label">الاسم:</span>
+                <span class="result-value" id="resultName">-</span>
+            </div>
+            <div class="result-item">
+                <span class="result-label">رقم الاكتتاب:</span>
+                <span class="result-value" id="resultSubscription">-</span>
+            </div>
+            <div class="result-item">
+                <span class="result-label">الفرع:</span>
+                <span class="result-value" id="resultBranch">-</span>
+            </div>
+            <div class="result-item">
+                <span class="result-label">تاريخ الإدخال:</span>
+                <span class="result-value" id="resultDate">-</span>
+            </div>
+            
+            <div id="subjectsResults" style="margin-top: 20px;"></div>
+            <div id="overallResult"></div>
         </div>
     </div>
 
     <script>
-        // بيانات المواد لكل فرع
-        const subjects = {
-            scientific: [
-                { name: "الفيزياء", max: 170, min: 50 },
-                { name: "اللغة الإنكليزية", max: 240, min: 50 },
-                { name: "علم الأحياء", max: 180, min: 50 },
-                { name: "اللغة العربية", max: 150, min: 50 },
-                { name: "الرياضيات", max: 340, min: 50 },
-                { name: "الكيمياء", max: 120, min: 50 },
-                { name: "التربية الدينية", max: 85, min: 50 },
-                { name: "اللغة الفرنسية", max: 175, min: 50 }
-            ],
-            literary: [
-                { name: "اللغة العربية", max: 200, min: 50 },
-                { name: "اللغة الإنكليزية", max: 200, min: 50 },
-                { name: "التاريخ", max: 150, min: 50 },
-                { name: "الجغرافيا", max: 150, min: 50 },
-                { name: "الفلسفة", max: 150, min: 50 },
-                { name: "التربية الدينية", max: 100, min: 50 },
-                { name: "اللغة الفرنسية", max: 150, min: 50 }
-            ]
-        };
-        
-        const ADMIN_PASSWORD = "mhmd";
-        let students = JSON.parse(localStorage.getItem('students')) || [];
-        let objections = JSON.parse(localStorage.getItem('objections')) || [];
-        
-        // تسجيل الدخول للمدير
-        function adminLogin() {
-            const password = document.getElementById('adminPassword').value;
+        document.getElementById('searchForm').addEventListener('submit', function(e) {
+            e.preventDefault();
             
-            if (password === ADMIN_PASSWORD) {
-                document.getElementById('adminDashboard').classList.remove('hidden');
-                loadStudents();
-                loadObjections();
-            } else {
-                alert('كلمة المرور غير صحيحة');
-            }
-        }
-        
-        // تحميل المواد حسب الفرع
-        function loadSubjects() {
-            const branch = document.getElementById('studentBranch').value;
-            const container = document.getElementById('subjectsContainer');
+            const name = document.getElementById('searchName').value;
+            const branch = document.getElementById('searchBranch').value;
+            const subscription = document.getElementById('searchSubscription').value;
             
-            if (!branch) {
-                container.innerHTML = '<p class="warning-message">يرجى اختيار الفرع أولاً</p>';
-                return;
-            }
+            // Search in localStorage
+            const key = `result_${subscription}`;
+            const storedData = localStorage.getItem(key);
             
-            let html = '<div class="subject-list">';
+            const resultCard = document.getElementById('resultCard');
             
-            subjects[branch].forEach(subject => {
-                html += `
-                    <div class="subject-item">
-                        <label>${subject.name}</label>
-                        <input type="number" id="subject-${subject.name}" 
-                               min="${subject.min}" max="${subject.max}" 
-                               placeholder="الدرجة (${subject.min}-${subject.max})">
-                    </div>
-                `;
-            });
-            
-            html += '</div>';
-            container.innerHTML = html;
-        }
-        
-        // حفظ الطالب
-        function saveStudent() {
-            const name = document.getElementById('studentName').value;
-            const number = document.getElementById('studentNumber').value;
-            const mother = document.getElementById('motherName').value;
-            const school = document.getElementById('schoolName').value;
-            const classroom = document.getElementById('classroom').value;
-            const branch = document.getElementById('studentBranch').value;
-            const success = document.getElementById('successRate').value;
-            
-            if (!name || !number || !mother || !branch) {
-                alert('يرجى ملء جميع الحقول الإلزامية');
-                return;
-            }
-            
-            // جمع الدرجات
-            const scores = {};
-            subjects[branch].forEach(subject => {
-                const scoreInput = document.getElementById(`subject-${subject.name}`);
-                const score = scoreInput ? parseInt(scoreInput.value) || 0 : 0;
-                scores[subject.name] = score;
-            });
-            
-            const student = {
-                id: Date.now(),
-                name,
-                number,
-                mother,
-                school,
-                classroom,
-                branch,
-                success,
-                scores,
-                date: new Date().toLocaleString()
-            };
-            
-            students.push(student);
-            localStorage.setItem('students', JSON.stringify(students));
-            
-            alert('تم حفظ الطالب بنجاح');
-            clearForm();
-            loadStudents();
-        }
-        
-        // مسح النموذج
-        function clearForm() {
-            document.getElementById('studentName').value = '';
-            document.getElementById('studentNumber').value = '';
-            document.getElementById('motherName').value = '';
-            document.getElementById('schoolName').value = '';
-            document.getElementById('classroom').value = '';
-            document.getElementById('studentBranch').value = '';
-            document.getElementById('successRate').value = 'pass';
-            document.getElementById('subjectsContainer').innerHTML = '';
-        }
-        
-        // تحميل الطلاب
-        function loadStudents() {
-            const container = document.getElementById('studentsList');
-            let html = '';
-            
-            students.forEach(student => {
-                html += `
-                    <div class="student-item">
-                        <h4>${student.name} (${student.number})</h4>
-                        <p>الأم: ${student.mother} | المدرسة: ${student.school}</p>
-                        <p>الفرع: ${student.branch === 'scientific' ? 'العلمي' : 'الأدبي'} | الحالة: ${student.success === 'pass' ? 'ناجح' : 'راسب'}</p>
-                        <div class="action-buttons">
-                            <button onclick="editStudent(${student.id})">تعديل</button>
-                            <button class="btn-danger" onclick="deleteStudent(${student.id})">حذف</button>
-                            <button class="btn-warning" onclick="viewStudent(${student.id})">عرض التفاصيل</button>
-                        </div>
-                    </div>
-                `;
-            });
-            
-            container.innerHTML = html || '<p class="warning-message">لا يوجد طلاب مسجلين</p>';
-        }
-        
-        // بحث الطلاب
-        function searchStudents() {
-            const searchTerm = document.getElementById('searchStudent').value.toLowerCase();
-            const filteredStudents = students.filter(student => 
-                student.name.toLowerCase().includes(searchTerm) || 
-                student.number.includes(searchTerm)
-            );
-            
-            const container = document.getElementById('studentsList');
-            let html = '';
-            
-            filteredStudents.forEach(student => {
-                html += `
-                    <div class="student-item">
-                        <h4>${student.name} (${student.number})</h4>
-                        <p>الأم: ${student.mother} | المدرسة: ${student.school}</p>
-                        <div class="action-buttons">
-                            <button onclick="editStudent(${student.id})">تعديل</button>
-                            <button class="btn-danger" onclick="deleteStudent(${student.id})">حذف</button>
-                        </div>
-                    </div>
-                `;
-            });
-            
-            container.innerHTML = html || '<p class="warning-message">لا توجد نتائج</p>';
-        }
-        
-        // حذف الطالب
-        function deleteStudent(id) {
-            if (confirm('هل أنت متأكد من حذف هذا الطالب؟')) {
-                students = students.filter(student => student.id !== id);
-                localStorage.setItem('students', JSON.stringify(students));
-                loadStudents();
-            }
-        }
-        
-        // تحميل الاعتراضات
-        function loadObjections() {
-            const container = document.getElementById('objectionsList');
-            let html = '';
-            
-            objections.forEach(obj => {
-                html += `
-                    <div class="student-item">
-                        <h4>${obj.studentName} (${obj.studentNumber})</h4>
-                        <p>المواد المعترض عليها: ${obj.subjects.join(', ')}</p>
-                        <p>التاريخ: ${obj.date}</p>
-                        <div class="action-buttons">
-                            <button class="btn-success" onclick="resolveObjection(${obj.id})">تم الحل</button>
-                            <button class="btn-danger" onclick="deleteObjection(${obj.id})">حذف</button>
-                        </div>
-                    </div>
-                `;
-            });
-            
-            container.innerHTML = html || '<p class="warning-message">لا توجد اعتراضات</p>';
-        }
-        
-        // تغيير كلمة المرور
-        function changePassword() {
-            const newPass = document.getElementById('adminPasswordChange').value;
-            const confirmPass = document.getElementById('adminPasswordConfirm').value;
-            
-            if (newPass !== confirmPass) {
-                alert('كلمة المرور غير متطابقة');
-                return;
-            }
-            
-            // في تطبيق حقيقي، هنا سيتم حفظ كلمة المرور الجديدة
-            alert('تم تغيير كلمة المرور بنجاح');
-        }
-        
-        // تصدير البيانات
-        function exportData() {
-            const data = {
-                students: students,
-                objections: objections,
-                exportDate: new Date().toLocaleString()
-            };
-            
-            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'exam_data_export.json';
-            a.click();
-        }
-        
-        // تبديل بين التبويبات
-        function switchTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            
-            document.querySelectorAll('.tab').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            
-            document.getElementById(tabId).classList.add('active');
-            
-            document.querySelectorAll('.tab').forEach(tab => {
-                if (tab.onclick && tab.onclick.toString().includes(tabId)) {
-                    tab.classList.add('active');
+            if (storedData) {
+                const data = JSON.parse(storedData);
+                
+                // Verify matching data
+                if (data.name === name && data.branch === branch) {
+                    // Display basic info
+                    document.getElementById('resultName').textContent = data.name;
+                    document.getElementById('resultSubscription').textContent = data.subscription;
+                    document.getElementById('resultBranch').textContent = data.branch;
+                    document.getElementById('resultDate').textContent = data.date;
+                    
+                    // Display subjects
+                    const subjectsContainer = document.getElementById('subjectsResults');
+                    subjectsContainer.innerHTML = '<div style="font-weight: bold; margin-bottom: 10px; color: #333;">المواد المعترض عليها:</div>';
+                    
+                    let allPassed = true;
+                    
+                    data.subjects.forEach((subject, index) => {
+                        const subjectElement = document.createElement('div');
+                        subjectElement.className = 'subject-result';
+                        
+                        subjectElement.innerHTML = `
+                            <div class="subject-header">
+                                <span class="subject-name">${subject.name}</span>
+                                <span class="${subject.result === 'ناجح' ? 'success-badge' : 'fail-badge'}">
+                                    ${subject.result === 'ناجح' ? 'ناجح ✅' : 'راسب ❌'}
+                                </span>
+                            </div>
+                        `;
+                        
+                        subjectsContainer.appendChild(subjectElement);
+                        
+                        if (subject.result === 'راسب') {
+                            allPassed = false;
+                        }
+                    });
+                    
+                    // Display overall result
+                    const overallResult = document.getElementById('overallResult');
+                    if (allPassed) {
+                        overallResult.innerHTML = `<div class="overall-result overall-success">🎉 جميع المواد ناجحة - مبروك!</div>`;
+                    } else {
+                        overallResult.innerHTML = `<div class="overall-result overall-fail">⚠️ بعض المواد راسبة - نتمنى لك التوفيق</div>`;
+                    }
+                    
+                    resultCard.style.display = 'block';
+                } else {
+                    alert('⚠️ لا توجد نتيجة مطابقة للبيانات المدخلة');
+                    resultCard.style.display = 'none';
                 }
-            });
-            
-            if (tabId === 'addStudentTab') {
-                loadSubjects();
+            } else {
+                alert('⚠️ لا توجد نتيجة مسجلة لهذا الرقم');
+                resultCard.style.display = 'none';
             }
-        }
-        
-        // إضافة مستمعي الأحداث
-        document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('studentBranch').addEventListener('change', loadSubjects);
         });
     </script>
 </body>
