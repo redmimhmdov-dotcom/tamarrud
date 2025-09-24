@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام استعلام نتائج الاعتراضات</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #1a2a6c;
+            position: relative;
+        }
+        
+        .header h1 {
+            color: #1a2a6c;
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .header p {
+            color: #555;
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .header-icon {
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: #1a2a6c;
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 5px 15px rgba(26, 42, 108, 0.4);
+        }
+        
+        .search-form {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border: 1px solid #e0e0e0;
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #333;
+            font-size: 16px;
+        }
+        
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s;
+            background: white;
+        }
+        
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #1a2a6c;
+            box-shadow: 0 0 0 3px rgba(26, 42, 108, 0.2);
+        }
+        
+        .search-btn {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, #1a2a6c, #2a3a9c);
+            color: white;
+            border: none;
+            padding: 18px;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 5px 15px rgba(26, 42, 108, 0.4);
+        }
+        
+        .search-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(26, 42, 108, 0.5);
+        }
+        
+        .search-btn:active {
+            transform: translateY(-1px);
+        }
+        
+        .results-section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .student-info {
+            background: linear-gradient(135deg, #1a2a6c, #2a3a9c);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .info-item {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .info-label {
+            font-weight: 600;
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 5px;
+        }
+        
+        .info-value {
+            font-weight: 700;
+            font-size: 16px;
+        }
+        
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .results-table th {
+            background: linear-gradient(135deg, #1a2a6c, #2a3a9c);
+            color: white;
+            padding: 18px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 16px;
+        }
+        
+        .results-table td {
+            padding: 16px;
+            text-align: center;
+            border-bottom: 1px solid #f0f0f0;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .results-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+        
+        .results-table tr:hover {
+            background: #eef2ff;
+        }
+        
+        .subject-name {
+            text-align: right;
+            font-weight: 700;
+            color: #1a2a6c;
+        }
+        
+        .protest-result {
+            color: #d32f2f;
+            font-weight: 700;
+        }
+        
+        .final-grade {
+            color: #388e3c;
+            font-weight: 700;
+        }
+        
+        .details {
+            color: #1a2a6c;
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 15px;
+            margin-top: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            display: none;
+        }
+        
+        .no-results i {
+            font-size: 60px;
+            color: #ddd;
+            margin-bottom: 20px;
+        }
+        
+        .no-results p {
+            font-size: 18px;
+            color: #666;
+            font-weight: 600;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 26px;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .results-table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+        
+        .success-badge {
+            background: #4caf50;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 700;
+            display: inline-block;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-icon">
+                <i class="fas fa-graduation-cap"></i>
+            </div>
+            <h1>نظام استعلام نتائج الاعتراضات</h1>
+            <p>استعلم عن نتيجة الاعتراضات باستخدام بياناتك الشخصية</p>
+        </div>
+        
+        <div class="search-form">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="studentName"><i class="fas fa-user"></i> الاسم الثلاثي</label>
+                    <input type="text" id="studentName" placeholder="أدخل الاسم الثلاثي">
+                </div>
+                
+                <div class="form-group">
+                    <label for="branch"><i class="fas fa-code-branch"></i> الفرع</label>
+                    <select id="branch">
+                        <option value="">اختر الفرع</option>
+                        <option value="علمي">علمي</option>
+                        <option value="أدبي">أدبي</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="subscriptionNumber"><i class="fas fa-id-card"></i> رقم الاكتتاب</label>
+                    <input type="text" id="subscriptionNumber" placeholder="أدخل رقم الاكتتاب">
+                </div>
+                
+                <button class="search-btn" id="searchButton">
+                    <i class="fas fa-search"></i> بحث عن النتائج
+                </button>
+            </div>
+        </div>
+        
+        <div class="no-results" id="noResults">
+            <i class="fas fa-search"></i>
+            <p>لا توجد نتائج مطابقة للبيانات المدخلة</p>
+        </div>
+        
+        <div class="results-section" id="resultsSection">
+            <div class="student-info">
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="info-label">الاسم الثلاثي</span>
+                        <span class="info-value" id="resultName">-</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">الفرع</span>
+                        <span class="info-value" id="resultBranch">-</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">رقم الاكتتاب</span>
+                        <span class="info-value" id="resultSubscription">-</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">حالة الطالب</span>
+                        <span class="info-value">ناجح <span class="success-badge">مبروك</span></span>
+                    </div>
+                </div>
+            </div>
+            
+            <h2 style="color: #1a2a6c; margin-bottom: 15px; text-align: center;">المواد التي تم الاعتراض على درجاتها</h2>
+            
+            <table class="results-table">
+                <thead>
+                    <tr>
+                        <th width="35%">المادة</th>
+                        <th width="20%">نتيجة الاعتراض</th>
+                        <th width="25%">الدرجة النهائية</th>
+                        <th width="20%">التفاصيل</th>
+                    </tr>
+                </thead>
+                <tbody id="resultsTableBody">
+                    <!-- سيتم ملؤها بالبيانات -->
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="footer">
+            <p>جميع الحقوق محفوظة © 2025 - نظام نتائج الاعتراضات</p>
+        </div>
+    </div>
+
+    <script>
+        // بيانات نموذجية للنتائج
+        const sampleData = [
+            {
+                name: "ميراف احمد اسعد",
+                branch: "علمي",
+                subscription: "1710982",
+                subjects: [
+                    { subject: "الرياضيات (رئيسية)", protestResult: 0, finalGrade: 240, details: 1 },
+                    { subject: "الكيمياء (رئيسية)", protestResult: 0, finalGrade: 100, details: 1 }
+                ]
+            },
+            {
+                name: "أحمد محمد علي",
+                branch: "أدبي",
+                subscription: "1710983",
+                subjects: [
+                    { subject: "اللغة العربية (رئيسية)", protestResult: 5, finalGrade: 85, details: 2 },
+                    { subject: "التاريخ (رئيسية)", protestResult: 3, finalGrade: 78, details: 1 }
+                ]
+            }
+        ];
+
+        // حفظ البيانات في localStorage إذا لم تكن موجودة
+        if (!localStorage.getItem('protestResults')) {
+            localStorage.setItem('protestResults', JSON.stringify(sampleData));
+        }
+
+        // البحث عن النتائج
+        document.getElementById('searchButton').addEventListener('click', function() {
+            const name = document.getElementById('studentName').value.trim();
+            const branch = document.getElementById('branch').value;
+            const subscription = document.getElementById('subscriptionNumber').value.trim();
+            
+            if (!name || !branch || !subscription) {
+                alert('يرجى ملء جميع الحقول المطلوبة');
+                return;
+            }
+            
+            const results = JSON.parse(localStorage.getItem('protestResults'));
+            const studentResult = results.find(result => 
+                result.name === name && 
+                result.branch === branch && 
+                result.subscription === subscription
+            );
+            
+            const resultsSection = document.getElementById('resultsSection');
+            const noResults = document.getElementById('noResults');
+            
+            if (studentResult) {
+                // عرض بيانات الطالب
+                document.getElementById('resultName').textContent = studentResult.name;
+                document.getElementById('resultBranch').textContent = studentResult.branch;
+                document.getElementById('resultSubscription').textContent = studentResult.subscription;
+                
+                // عرض جدول المواد
+                const tableBody = document.getElementById('resultsTableBody');
+                tableBody.innerHTML = '';
+                
+                studentResult.subjects.forEach(subject => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td class="subject-name">${subject.subject}</td>
+                        <td class="protest-result">${subject.protestResult}</td>
+                        <td class="final-grade">${subject.finalGrade}</td>
+                        <td class="details">${subject.details}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+                
+                resultsSection.style.display = 'block';
+                noResults.style.display = 'none';
+            } else {
+                resultsSection.style.display = 'none';
+                noResults.style.display = 'block';
+            }
+        });
+
+        // إضافة تأثيرات عند التحميل
+        window.addEventListener('DOMContentLoaded', () => {
+            document.querySelector('.container').style.opacity = '0';
+            document.querySelector('.container').style.transform = 'translateY(20px)';
+            
+            setTimeout(() => {
+                document.querySelector('.container').style.transition = 'all 0.5s ease';
+                document.querySelector('.container').style.opacity = '1';
+                document.querySelector('.container').style.transform = 'translateY(0)';
+            }, 100);
+        });
+    </script>
+</body>
+</html>
