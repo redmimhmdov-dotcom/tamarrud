@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام إدارة نتائج الاعتراضات</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #1a2a6c;
+            position: relative;
+        }
+        
+        .header h1 {
+            color: #1a2a6c;
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .header p {
+            color: #555;
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .header-icon {
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: #1a2a6c;
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 5px 15px rgba(26, 42, 108, 0.4);
+        }
+        
+        .tabs {
+            display: flex;
+            margin-bottom: 25px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 5px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        
+        .tab {
+            flex: 1;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 8px;
+            font-weight: 700;
+            transition: all 0.3s;
+            color: #555;
+        }
+        
+        .tab.active {
+            background: #1a2a6c;
+            color: white;
+            box-shadow: 0 3px 10px rgba(26, 42, 108, 0.3);
+        }
+        
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .form-container {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border: 1px solid #e0e0e0;
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #333;
+            font-size: 16px;
+        }
+        
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s;
+            background: white;
+        }
+        
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #1a2a6c;
+            box-shadow: 0 0 0 3px rgba(26, 42, 108, 0.2);
+        }
+        
+        .subjects-section {
+            margin-top: 25px;
+            padding-top: 25px;
+            border-top: 2px dashed #ddd;
+        }
+        
+        .subject-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .subject-header h3 {
+            color: #1a2a6c;
+            font-size: 20px;
+        }
+        
+        .add-subject {
+            background: #4caf50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+        
+        .add-subject:hover {
+            background: #388e3c;
+            transform: translateY(-2px);
+        }
+        
+        .subject-item {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+            border-left: 4px solid #1a2a6c;
+        }
+        
+        .subject-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .subject-title {
+            font-weight: 700;
+            color: #1a2a6c;
+            font-size: 18px;
+        }
+        
+        .remove-subject {
+            background: #f44336;
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .subject-form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #1a2a6c, #2a3a9c);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(26, 42, 108, 0.4);
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #5a6268;
+            transform: translateY(-3px);
+        }
+        
+        .records-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin-top: 20px;
+        }
+        
+        .records-table th {
+            background: linear-gradient(135deg, #1a2a6c, #2a3a9c);
+            color: white;
+            padding: 18px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 16px;
+        }
+        
+        .records-table td {
+            padding: 16px;
+            text-align: center;
+            border-bottom: 1px solid #f0f0f0;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .records-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+        
+        .records-table tr:hover {
+            background: #eef2ff;
+        }
+        
+        .action-cell {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+        
+        .edit-btn, .delete-btn {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .edit-btn {
+            background: #ffc107;
+            color: #212529;
+        }
+        
+        .edit-btn:hover {
+            background: #e0a800;
+        }
+        
+        .delete-btn {
+            background: #dc3545;
+            color: white;
+        }
+        
+        .delete-btn:hover {
+            background: #c82333;
+        }
+        
+        .no-records {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 15px;
+            margin-top: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .no-records i {
+            font-size: 60px;
+            color: #ddd;
+            margin-bottom: 20px;
+        }
+        
+        .no-records p {
+            font-size: 18px;
+            color: #666;
+            font-weight: 600;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #c3e6cb;
+            display: none;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 26px;
+            }
+            
+            .form-grid, .subject-form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .tabs {
+                flex-direction: column;
+            }
+            
+            .action-cell {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-icon">
+                <i class="fas fa-user-shield"></i>
+            </div>
+            <h1>نظام إدارة نتائج الاعتراضات</h1>
+            <p>أدخل بيانات الطلاب ونتائج الاعتراضات</p>
+        </div>
+        
+        <div class="tabs">
+            <div class="tab active" data-tab="add">إضافة بيانات جديدة</div>
+            <div class="tab" data-tab="view">عرض السجلات</div>
+            <div class="tab" data-tab="search">الانتقال للاستعلام</div>
+        </div>
+        
+        <div class="success-message" id="successMessage">
+            <i class="fas fa-check-circle"></i> تم حفظ البيانات بنجاح!
+        </div>
+        
+        <div class="tab-content active" id="addTab">
+            <div class="form-container">
+                <h2 style="color: #1a2a6c; margin-bottom: 20px;">بيانات الطالب</h2>
+                
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="studentName"><i class="fas fa-user"></i> الاسم الثلاثي</label>
+                        <input type="text" id="studentName" placeholder="أدخل الاسم الثلاثي">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="branch"><i class="fas fa-code-branch"></i> الفرع</label>
+                        <select id="branch">
+                            <option value="">اختر الفرع</option>
+                            <option value="علمي">علمي</option>
+                            <option value="أدبي">أدبي</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="subscriptionNumber"><i class="fas fa-id-card"></i> رقم الاكتتاب</label>
+                        <input type="text" id="subscriptionNumber" placeholder="أدخل رقم الاكتتاب">
+                    </div>
+                </div>
+                
+                <div class="subjects-section">
+                    <div class="subject-header">
+                        <h3>المواد المعترض عليها</h3>
+                        <button class="add-subject" id="addSubjectBtn">
+                            <i class="fas fa-plus"></i> إضافة مادة
+                        </button>
+                    </div>
+                    
+                    <div id="subjectsContainer">
+                        <!-- المواد ستضاف هنا ديناميكياً -->
+                    </div>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-primary" id="saveBtn">
+                        <i class="fas fa-save"></i> حفظ البيانات
+                    </button>
+                    <button class="btn btn-secondary" id="clearBtn">
+                        <i class="fas fa-broom"></i> مسح النموذج
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="tab-content" id="viewTab">
+            <h2 style="color: #1a2a6c; margin-bottom: 20px;">سجلات الطلاب</h2>
+            
+            <div id="recordsList">
+                <!-- السجلات ستظهر هنا -->
+            </div>
+        </div>
+        
+        <div class="tab-content" id="searchTab">
+            <div style="text-align: center; padding: 40px;">
+                <i class="fas fa-search" style="font-size: 80px; color: #1a2a6c; margin-bottom: 20px;"></i>
+                <h2 style="color: #1a2a6c; margin-bottom: 15px;">الانتقال إلى صفحة الاستعلام</h2>
+                <p style="color: #666; margin-bottom: 30px; font-size: 18px;">
+                    انقر على الزر أدناه للانتقال إلى صفحة استعلام الطلاب عن نتائج الاعتراضات
+                </p>
+                <button class="btn btn-primary" id="goToSearchBtn">
+                    <i class="fas fa-external-link-alt"></i> الانتقال إلى صفحة الاستعلام
+                </button>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>جميع الحقوق محفوظة © 2025 - نظام إدارة نتائج الاعتراضات</p>
+        </div>
+    </div>
+
+    <script>
+        // بيانات التخزين
+        let protestRecords = JSON.parse(localStorage.getItem('protestRecords')) || [];
+        let subjectCount = 0;
+        
+        // عناصر DOM
+        const tabs = document.querySelectorAll('.tab');
+        const tabContents = document.querySelectorAll('.tab-content');
+        const subjectsContainer = document.getElementById('subjectsContainer');
+        const addSubjectBtn = document.getElementById('addSubjectBtn');
+        const saveBtn = document.getElementById('saveBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        const recordsList = document.getElementById('recordsList');
+        const goToSearchBtn = document.getElementById('goToSearchBtn');
+        const successMessage = document.getElementById('successMessage');
+        
+        // إدارة التبويبات
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const tabId = tab.getAttribute('data-tab');
+                
+                tabs.forEach(t => t.classList.remove('active'));
+                tabContents.forEach(content => content.classList.remove('active'));
+                
+                tab.classList.add('active');
+                document.getElementById(tabId + 'Tab').classList.add('active');
+                
+                if (tabId === 'view') {
+                    displayRecords();
+                }
+            });
+        });
+        
+        // إضافة مادة جديدة
+        addSubjectBtn.addEventListener('click', () => {
+            subjectCount++;
+            const subjectHTML = `
+                <div class="subject-item" id="subject-${subjectCount}">
+                    <div class="subject-item-header">
+                        <div class="subject-title">المادة ${subjectCount}</div>
+                        <button class="remove-subject" onclick="removeSubject(${subjectCount})">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="subject-form-grid">
+                        <div class="form-group">
+                            <label for="subjectName-${subjectCount}">اسم المادة</label>
+                            <input type="text" id="subjectName-${subjectCount}" placeholder="أدخل اسم المادة">
+                        </div>
+                        <div class="form-group">
+                            <label for="protestResult-${subjectCount}">نتيجة الاعتراض</label>
+                            <input type="number" id="protestResult-${subjectCount}" placeholder="أدخل نتيجة الاعتراض">
+                        </div>
+                        <div class="form-group">
+                            <label for="finalGrade-${subjectCount}">الدرجة النهائية</label>
+                            <input type="number" id="finalGrade-${subjectCount}" placeholder="أدخل الدرجة النهائية">
+                        </div>
+                        <div class="form-group">
+                            <label for="details-${subjectCount}">التفاصيل</label>
+                            <input type="text" id="details-${subjectCount}" placeholder="أدخل التفاصيل">
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            subjectsContainer.insertAdjacentHTML('beforeend', subjectHTML);
+        });
+        
+        // إزالة مادة
+        window.removeSubject = (id) => {
+            const subjectElement = document.getElementById(`subject-${id}`);
+            if (subjectElement) {
+                subjectElement.remove();
+            }
+        };
+        
+        // حفظ البيانات
+        saveBtn.addEventListener('click', () => {
+            const studentName = document.getElementById('studentName').value.trim();
+            const branch = document.getElementById('branch').value;
+            const subscriptionNumber = document.getElementById('subscriptionNumber').value.trim();
+            
+            if (!studentName || !branch || !subscriptionNumber) {
+                alert('يرجى ملء جميع بيانات الطالب الأساسية');
+                return;
+            }
+            
+            // جمع بيانات المواد
+            const subjects = [];
+            for (let i = 1; i <= subjectCount; i++) {
+                const subjectElement = document.getElementById(`subject-${i}`);
+                if (subjectElement) {
+                    const subjectName = document.getElementById(`subjectName-${i}`).value.trim();
+                    const protestResult = document.getElementById(`protestResult-${i}`).value.trim();
+                    const finalGrade = document.getElementById(`finalGrade-${i}`).value.trim();
+                    const details = document.getElementById(`details-${i}`).value.trim();
+                    
+                    if (subjectName) {
+                        subjects.push({
+                            subject: subjectName,
+                            protestResult: protestResult || 0,
+                            finalGrade: finalGrade || 0,
+                            details: details || '1'
+                        });
+                    }
+                }
+            }
+            
+            if (subjects.length === 0) {
+                alert('يرجى إضافة مادة واحدة على الأقل');
+                return;
+            }
+            
+            // إنشاء كائن البيانات
+            const record = {
+                id: Date.now(),
+                name: studentName,
+                branch: branch,
+                subscription: subscriptionNumber,
+                subjects: subjects,
+                date: new Date().toLocaleString('ar-EG')
+            };
+            
+            // إضافة إلى التخزين
+            protestRecords.push(record);
+            localStorage.setItem('protestRecords', JSON.stringify(protestRecords));
+            
+            // إظهار رسالة النجاح
+            successMessage.style.display = 'block';
+            setTimeout(() => {
+                successMessage.style.display = 'none';
+            }, 3000);
+            
+            // مسح النموذج
+            clearForm();
+            
+            // التبديل إلى تبويب العرض
+            tabs.forEach(t => t.classList.remove('active'));
+            tabContents.forEach(content => content.classList.remove('active'));
+            
+            document.querySelector('.tab[data-tab="view"]').classList.add('active');
+            document.getElementById('viewTab').classList.add('active');
+            
+            displayRecords();
+        });
+        
+        // مسح النموذج
+        clearBtn.addEventListener('click', clearForm);
+        
+        function clearForm() {
+            document.getElementById('studentName').value = '';
+            document.getElementById('branch').value = '';
+            document.getElementById('subscriptionNumber').value = '';
+            subjectsContainer.innerHTML = '';
+            subjectCount = 0;
+        }
+        
+        // عرض السجلات
+        function displayRecords() {
+            if (protestRecords.length === 0) {
+                recordsList.innerHTML = `
+                    <div class="no-records">
+                        <i class="fas fa-inbox"></i>
+                        <p>لا توجد سجلات مضافة حتى الآن</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            let tableHTML = `
+                <table class="records-table">
+                    <thead>
+                        <tr>
+                            <th width="20%">الاسم الثلاثي</th>
+                            <th width="15%">الفرع</th>
+                            <th width="15%">رقم الاكتتاب</th>
+                            <th width="20%">عدد المواد</th>
+                            <th width="20%">تاريخ الإضافة</th>
+                            <th width="10%">الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+            
+            protestRecords.forEach(record => {
+                tableHTML += `
+                    <tr>
+                        <td>${record.name}</td>
+                        <td>${record.branch}</td>
+                        <td>${record.subscription}</td>
+                        <td>${record.subjects.length} مادة</td>
+                        <td>${record.date}</td>
+                        <td class="action-cell">
+                            <button class="edit-btn" onclick="editRecord(${record.id})">
+                                <i class="fas fa-edit"></i> تعديل
+                            </button>
+                            <button class="delete-btn" onclick="deleteRecord(${record.id})">
+                                <i class="fas fa-trash"></i> حذف
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            tableHTML += `</tbody></table>`;
+            recordsList.innerHTML = tableHTML;
+        }
+        
+        // الانتقال إلى صفحة الاستعلام
+        goToSearchBtn.addEventListener('click', () => {
+            // في تطبيق حقيقي، سننقل المستخدم إلى صفحة الاستعلام
+            // هنا سنعرض رسالة توضيحية
+            alert('في التطبيق النهائي، سيتم نقل المستخدم إلى صفحة استعلام الطلاب عن نتائج الاعتراضات');
+            
+            // يمكنك استبدال هذا السطر بالانتقال الفعلي للصفحة:
+            // window.location.href = 'search-page.html';
+        });
+        
+        // وظائف التعديل والحذف
+        window.editRecord = (id) => {
+            const record = protestRecords.find(r => r.id === id);
+            if (record) {
+                // ملء النموذج بالبيانات
+                document.getElementById('studentName').value = record.name;
+                document.getElementById('branch').value = record.branch;
+                document.getElementById('subscriptionNumber').value = record.subscription;
+                
+                // مسح المواد الحالية وإضافة المواد من السجل
+                subjectsContainer.innerHTML = '';
+                subjectCount = 0;
+                
+                record.subjects.forEach(subject => {
+                    subjectCount++;
+                    const subjectHTML = `
+                        <div class="subject-item" id="subject-${subjectCount}">
+                            <div class="subject-item-header">
+                                <div class="subject-title">المادة ${subjectCount}</div>
+                                <button class="remove-subject" onclick="removeSubject(${subjectCount})">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                            <div class="subject-form-grid">
+                                <div class="form-group">
+                                    <label for="subjectName-${subjectCount}">اسم المادة</label>
+                                    <input type="text" id="subjectName-${subjectCount}" value="${subject.subject}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="protestResult-${subjectCount}">نتيجة الاعتراض</label>
+                                    <input type="number" id="protestResult-${subjectCount}" value="${subject.protestResult}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="finalGrade-${subjectCount}">الدرجة النهائية</label>
+                                    <input type="number" id="finalGrade-${subjectCount}" value="${subject.finalGrade}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="details-${subjectCount}">التفاصيل</label>
+                                    <input type="text" id="details-${subjectCount}" value="${subject.details}">
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    
+                    subjectsContainer.insertAdjacentHTML('beforeend', subjectHTML);
+                });
+                
+                // حذف السجل القديم
+                protestRecords = protestRecords.filter(r => r.id !== id);
+                localStorage.setItem('protestRecords', JSON.stringify(protestRecords));
+                
+                // التبديل إلى تبويب الإضافة
+                tabs.forEach(t => t.classList.remove('active'));
+                tabContents.forEach(content => content.classList.remove('active'));
+                
+                document.querySelector('.tab[data-tab="add"]').classList.add('active');
+                document.getElementById('addTab').classList.add('active');
+                
+                alert('تم تحميل البيانات للتعديل. بعد التعديل انقر على "حفظ البيانات"');
+            }
+        };
+        
+        window.deleteRecord = (id) => {
+            if (confirm('هل أنت متأكد من حذف هذا السجل؟')) {
+                protestRecords = protestRecords.filter(r => r.id !== id);
+                localStorage.setItem('protestRecords', JSON.stringify(protestRecords));
+                displayRecords();
+            }
+        };
+        
+        // التهيئة الأولية
+        document.addEventListener('DOMContentLoaded', () => {
+            // إضافة مادة افتراضية عند التحميل
+            addSubjectBtn.click();
+        });
+    </script>
+</body>
+</html>
