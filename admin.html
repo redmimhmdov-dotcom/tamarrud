@@ -1,300 +1,90 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>نظام النتائج - الاستعلام</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Arial', sans-serif;
-        }
-        
-        body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
-        
-        .container {
-            max-width: 500px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        }
-        
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        
-        .header h1 {
-            color: #333;
-            font-size: 28px;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-        
-        .header p {
-            color: #666;
-            font-size: 16px;
-            font-weight: 600;
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 8px;
-            color: #333;
-            font-size: 16px;
-        }
-        
-        input, select {
-            width: 100%;
-            padding: 15px;
-            border: 2px solid #ddd;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: bold;
-            transition: border-color 0.3s;
-        }
-        
-        input:focus, select:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-        
-        .btn {
-            width: 100%;
-            padding: 15px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-        
-        .btn:hover {
-            transform: translateY(-2px);
-        }
-        
-        .result-card {
-            margin-top: 30px;
-            padding: 20px;
-            background: #f8f9fa;
-            border-radius: 15px;
-            border: 2px solid #e9ecef;
-            display: none;
-        }
-        
-        .result-item {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #dee2e6;
-        }
-        
-        .result-label {
-            font-weight: bold;
-            color: #333;
-        }
-        
-        .result-value {
-            font-weight: bold;
-            color: #667eea;
-        }
-        
-        .subject-result {
-            background: white;
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 10px;
-            border-left: 4px solid #667eea;
-        }
-        
-        .subject-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-        }
-        
-        .subject-name {
-            font-weight: bold;
-            color: #333;
-        }
-        
-        .success-badge {
-            background: #4CAF50;
-            color: white;
-            padding: 5px 10px;
-            border-radius: 15px;
-            font-weight: bold;
-            font-size: 14px;
-        }
-        
-        .fail-badge {
-            background: #f44336;
-            color: white;
-            padding: 5px 10px;
-            border-radius: 15px;
-            font-weight: bold;
-            font-size: 14px;
-        }
-        
-        .overall-result {
-            text-align: center;
-            padding: 15px;
-            border-radius: 10px;
-            margin-top: 15px;
-            font-weight: bold;
-            font-size: 18px;
-        }
-        
-        .overall-success {
-            background: #4CAF50;
-            color: white;
-        }
-        
-        .overall-fail {
-            background: #f44336;
-            color: white;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>لوحة المعلم</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>🔍 نظام النتائج - الاستعلام</h1>
-            <p>استعلام عن نتيجة الاعتراض</p>
-        </div>
-        
-        <form id="searchForm">
-            <div class="form-group">
-                <label for="searchName">الاسم الثلاثي:</label>
-                <input type="text" id="searchName" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="searchBranch">الفرع:</label>
-                <select id="searchBranch" required>
-                    <option value="">اختر الفرع</option>
-                    <option value="علمي">علمي</option>
-                    <option value="أدبي">أدبي</option>
-                </select>
-            </div>
-            
-            <div class="form-group">
-                <label for="searchSubscription">رقم الاكتتاب:</label>
-                <input type="text" id="searchSubscription" required>
-            </div>
-            
-            <button type="submit" class="btn">بحث عن النتيجة</button>
-        </form>
-        
-        <div id="resultCard" class="result-card">
-            <div class="result-item">
-                <span class="result-label">الاسم:</span>
-                <span class="result-value" id="resultName">-</span>
-            </div>
-            <div class="result-item">
-                <span class="result-label">رقم الاكتتاب:</span>
-                <span class="result-value" id="resultSubscription">-</span>
-            </div>
-            <div class="result-item">
-                <span class="result-label">الفرع:</span>
-                <span class="result-value" id="resultBranch">-</span>
-            </div>
-            <div class="result-item">
-                <span class="result-label">تاريخ الإدخال:</span>
-                <span class="result-value" id="resultDate">-</span>
-            </div>
-            
-            <div id="subjectsResults" style="margin-top: 20px;"></div>
-            <div id="overallResult"></div>
-        </div>
-    </div>
+  <h2>📝 إدخال بيانات الطالب</h2>
+  <input type="text" id="name" placeholder="الاسم الثلاثي">
+  <input type="text" id="number" placeholder="رقم الاكتتاب">
+  <select id="branch" onchange="renderSubjects()">
+    <option value="">اختر الفرع</option>
+    <option value="أدبي">أدبي</option>
+    <option value="علمي">علمي</option>
+  </select>
+  <div id="subjects-area"></div>
+  <button onclick="saveStudent()">💾 حفظ البيانات</button>
 
-    <script>
-        document.getElementById('searchForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const name = document.getElementById('searchName').value;
-            const branch = document.getElementById('searchBranch').value;
-            const subscription = document.getElementById('searchSubscription').value;
-            
-            // Search in localStorage
-            const key = `result_${subscription}`;
-            const storedData = localStorage.getItem(key);
-            
-            const resultCard = document.getElementById('resultCard');
-            
-            if (storedData) {
-                const data = JSON.parse(storedData);
-                
-                // Verify matching data
-                if (data.name === name && data.branch === branch) {
-                    // Display basic info
-                    document.getElementById('resultName').textContent = data.name;
-                    document.getElementById('resultSubscription').textContent = data.subscription;
-                    document.getElementById('resultBranch').textContent = data.branch;
-                    document.getElementById('resultDate').textContent = data.date;
-                    
-                    // Display subjects
-                    const subjectsContainer = document.getElementById('subjectsResults');
-                    subjectsContainer.innerHTML = '<div style="font-weight: bold; margin-bottom: 10px; color: #333;">المواد المعترض عليها:</div>';
-                    
-                    let allPassed = true;
-                    
-                    data.subjects.forEach((subject, index) => {
-                        const subjectElement = document.createElement('div');
-                        subjectElement.className = 'subject-result';
-                        
-                        subjectElement.innerHTML = `
-                            <div class="subject-header">
-                                <span class="subject-name">${subject.name}</span>
-                                <span class="${subject.result === 'ناجح' ? 'success-badge' : 'fail-badge'}">
-                                    ${subject.result === 'ناجح' ? 'ناجح ✅' : 'راسب ❌'}
-                                </span>
-                            </div>
-                        `;
-                        
-                        subjectsContainer.appendChild(subjectElement);
-                        
-                        if (subject.result === 'راسب') {
-                            allPassed = false;
-                        }
-                    });
-                    
-                    // Display overall result
-                    const overallResult = document.getElementById('overallResult');
-                    if (allPassed) {
-                        overallResult.innerHTML = `<div class="overall-result overall-success">🎉 جميع المواد ناجحة - مبروك!</div>`;
-                    } else {
-                        overallResult.innerHTML = `<div class="overall-result overall-fail">⚠️ بعض المواد راسبة - نتمنى لك التوفيق</div>`;
-                    }
-                    
-                    resultCard.style.display = 'block';
-                } else {
-                    alert('⚠️ لا توجد نتيجة مطابقة للبيانات المدخلة');
-                    resultCard.style.display = 'none';
-                }
-            } else {
-                alert('⚠️ لا توجد نتيجة مسجلة لهذا الرقم');
-                resultCard.style.display = 'none';
-            }
-        });
-    </script>
+  <script>
+    const subjects = {
+      "أدبي": [
+        { name: "لغة عربية", max: 400, min: 160 },
+        { name: "اللغة الإنجليزية", max: 400, min: 160 },
+        { name: "التاريخ", max: 300, min: 120 },
+        { name: "الجغرافيا", max: 300, min: 120 },
+        { name: "الفلسفة والعلوم الإنسانية", max: 300, min: 120 },
+        { name: "التربية الإسلامية", max: 200, min: 80 }
+      ],
+      "علمي": [
+        { name: "لغة عربية", max: 400, min: 160 },
+        { name: "اللغة الإنجليزية", max: 400, min: 160 },
+        { name: "الرياضيات", max: 600, min: 240 },
+        { name: "الفيزياء", max: 300, min: 120 },
+        { name: "الكيمياء", max: 300, min: 120 },
+        { name: "العلوم", max: 300, min: 120 },
+        { name: "التربية الإسلامية", max: 200, min: 80 }
+      ]
+    };
+
+    function renderSubjects() {
+      const branch = document.getElementById("branch").value;
+      const area = document.getElementById("subjects-area");
+      area.innerHTML = "";
+      if (!branch || !subjects[branch]) return;
+
+      let html = `<table><tr><th>المادة</th><th>الدرجة</th><th>العظمى</th><th>الدنيا</th></tr>`;
+      subjects[branch].forEach((subj, i) => {
+        html += `<tr>
+          <td>${subj.name}</td>
+          <td><input type="number" id="mark_${i}" placeholder="الدرجة"></td>
+          <td>${subj.max}</td>
+          <td>${subj.min}</td>
+        </tr>`;
+      });
+      html += `</table>`;
+      area.innerHTML = html;
+    }
+
+    function saveStudent() {
+      const name = document.getElementById("name").value.trim();
+      const number = document.getElementById("number").value.trim();
+      const branch = document.getElementById("branch").value;
+      if (!name || !number || !branch) return alert("يرجى تعبئة جميع الحقول");
+
+      const marks = {};
+      subjects[branch].forEach((subj, i) => {
+        marks[subj.name] = {
+          value: +document.getElementById("mark_" + i).value,
+          max: subj.max,
+          min: subj.min
+        };
+      });
+
+      const student = {
+        name,
+        number,
+        branch,
+        governorate: "الحسكة",
+        year: "2025",
+        marks
+      };
+
+      const key = "student_" + number + "_" + branch + "_2025";
+      localStorage.setItem(key, JSON.stringify(student));
+      alert("✅ تم حفظ بيانات الطالب بنجاح");
+    }
+  </script>
 </body>
 </html>
