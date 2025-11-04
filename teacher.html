@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>إدخال بيانات الطالب</title>
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; direction: rtl; padding: 20px; background: #f0f4f8; }
+    input, select, button { padding: 10px; margin: 5px; font-size: 16px; }
+    #saveNotification {
+      display: none;
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #00796b;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      font-size: 16px;
+      z-index: 999;
+    }
+  </style>
+</head>
+<body>
+  <h2>إدخال بيانات الطالب</h2>
+  <input id="name" placeholder="اسم الطالب الثلاثي">
+  <input id="class" placeholder="الصف">
+  <input id="group" placeholder="الشعبة"><br>
+  <select id="subject">
+    <option>الرياضيات</option>
+    <option>الانجليزي</option>
+    <option>العربي</option>
+    <option>علوم</option>
+  </select>
+  <input id="absence" placeholder="غياب">
+  <input id="delay" placeholder="تأخر">
+  <input id="homework" placeholder="وظائف">
+  <input id="quiz" placeholder="مذاكرة">
+  <input id="exam" placeholder="امتحان">
+  <button onclick="saveData()">💾 حفظ البيانات</button>
+
+  <div id="saveNotification">✅ تم حفظ البيانات بنجاح</div>
+
+  <script>
+    let studentsData = JSON.parse(localStorage.getItem("studentsData") || "[]");
+
+    function saveData() {
+      const name = document.getElementById("name").value.trim();
+      const className = document.getElementById("class").value.trim();
+      const group = document.getElementById("group").value.trim();
+      const subject = document.getElementById("subject").value;
+      const absence = document.getElementById("absence").value;
+      const delay = document.getElementById("delay").value;
+      const homework = document.getElementById("homework").value;
+      const quiz = document.getElementById("quiz").value;
+      const exam = document.getElementById("exam").value;
+
+      let student = studentsData.find(s => s.name === name && s.class === className);
+      if (!student) {
+        student = { name, class: className, group, status: {} };
+        studentsData.push(student);
+      }
+
+      student.status[subject] = {
+        "غياب": absence,
+        "تأخر": delay,
+        "وظائف": homework,
+        "مذاكرة": quiz,
+        "امتحان": exam
+      };
+
+      localStorage.setItem("studentsData", JSON.stringify(studentsData));
+      showSaveNotification();
+    }
+
+    function showSaveNotification() {
+      const note = document.getElementById("saveNotification");
+      note.style.display = "block";
+      setTimeout(() => {
+        note.style.display = "none";
+      }, 3000);
+    }
+  </script>
+</body>
+</html>
