@@ -1,25 +1,28 @@
-ش<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ar">
 <head>
   <meta charset="UTF-8">
   <title>بوابة مدرسة بدر الدين الغزال</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <style>
-    body {
+    html, body {
       margin: 0;
+      padding: 0;
+      height: 100vh;
+      overflow: hidden;
+      background: #121212;
       font-family: 'Segoe UI', sans-serif;
-      direction: rtl;
-      background: linear-gradient(to bottom, #212121, #000000);
       color: #f5f5f5;
+      direction: rtl;
       display: flex;
       flex-direction: column;
-      align-items: center;
       justify-content: center;
-      min-height: 100vh;
+      align-items: center;
       text-align: center;
     }
     .logo {
-      width: 200px;
-      margin-top: 10px;
+      width: 250px;
+      margin-bottom: 10px;
       border-radius: 12px;
       box-shadow: 0 0 10px rgba(255, 152, 0, 0.5);
     }
@@ -29,13 +32,13 @@
     }
     p {
       color: #ccc;
-      margin: 5px;
+      margin-bottom: 20px;
     }
     .buttons {
       display: flex;
       flex-direction: column;
       gap: 15px;
-      margin-top: 30px;
+      margin-top: 20px;
     }
     .buttons a {
       text-decoration: none;
@@ -52,9 +55,10 @@
       transform: scale(1.05);
     }
     footer {
-      margin-top: 40px;
+      margin-top: auto;
       font-size: 14px;
       color: #888;
+      padding: 10px;
     }
   </style>
 </head>
