@@ -13,33 +13,34 @@
       text-align: center;
     }
     .logo {
-      width: 250px;
-      margin-bottom: 25px;
-      border-radius: 25px;
-      box-shadow: 0 0 25px rgba(255, 152, 0, 0.5);
+      width: 120px;
+      margin-bottom: 10px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(255, 152, 0, 0.5);
     }
     h2 {
       color: #ff9800;
-      margin-bottom: 10px;
+      margin-bottom: 5px;
     }
-    input {
+    p {
+      color: #ccc;
+      margin-bottom: 20px;
+    }
+    input, button {
       padding: 10px;
-      margin: 10px;
+      margin: 5px;
       font-size: 16px;
       border-radius: 6px;
       border: none;
+    }
+    input {
       background: #333;
       color: #fff;
-      width: 200px;
     }
     button {
-      padding: 10px 20px;
-      background: #00796b;
+      background: linear-gradient(to right, #ff9800, #f57c00);
       color: #212121;
       font-weight: bold;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
     }
     table {
       width: 100%;
@@ -54,34 +55,37 @@
       display: none;
     }
     #notification {
-      margin-top: 25px;
+      margin-top: 10px;
       color: #4caf50;
       font-weight: bold;
+    }
+    footer {
+      margin-top: 40px;
+      font-size: 14px;
+      color: #888;
     }
   </style>
 </head>
 <body>
 
-  <!-- شعار المدرسة -->
-  <img src="logo.png" alt="شعار المدرسة" class="logo">
-  <h2>نقرب المسافات رغم الصعوبات </h2>
-  <h2>مدرسة بدر الدين الغزال</h2>
-  <p>اختر نوع الدخول المناسب لك</p>
+  <img src="https://i.ibb.co/KpdJjYwq/logo.jpg" class="logo" alt="شعار المدرسة">
+  <h2>🧑‍💼 لوحة تحكم المدير</h2>
+  <p>نقرب المسافات رغم الصعوبات</p>
 
-  <!-- نموذج كلمة المرور -->
   <input type="password" id="password" placeholder="كلمة المرور">
   <button onclick="checkPassword()">دخول</button>
   <div id="notification"></div>
 
-  <!-- لوحة التحكم -->
   <div id="adminPanel">
-    <h3>🧑‍💼 لوحة تحكم المدير</h3>
+    <h3>📋 بيانات الطلاب</h3>
     <button onclick="exportJSON()">📥 تصدير JSON</button>
     <div id="adminData"></div>
   </div>
 
+  <footer>تم التصميم بواسطة محمد الحسين — 0952725590</footer>
+
   <script>
-    const adminPassword = "1234"; // يمكنك تغييره هنا
+    const adminPassword = "1234";
     let studentsData = JSON.parse(localStorage.getItem("studentsData") || "[]");
 
     function checkPassword() {
@@ -130,8 +134,3 @@
       const dl = document.createElement("a");
       dl.setAttribute("href", dataStr);
       dl.setAttribute("download", "studentsData.json");
-      dl.click();
-    }
-  </script>
-</body>
-</html>
