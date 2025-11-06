@@ -8,21 +8,20 @@
     html, body {
       margin: 0;
       padding: 0;
-      height: 100vh;
-      overflow: hidden;
+      min-height: 100vh;
+      overflow-y: auto;
       background: #121212;
       font-family: 'Segoe UI', sans-serif;
       color: #f5f5f5;
       direction: rtl;
       display: flex;
       flex-direction: column;
-      justify-content: center;
       align-items: center;
       text-align: center;
     }
     .logo {
-      width: 250px;
-      margin-bottom: 10px;
+      width: 180px;
+      margin: 10px 0;
       border-radius: 12px;
       box-shadow: 0 0 10px rgba(255, 152, 0, 0.5);
     }
@@ -54,16 +53,22 @@
     .buttons a:hover {
       transform: scale(1.05);
     }
-    footer {
-      margin-top: auto;
+    .designer {
       font-size: 14px;
       color: #888;
-      padding: 10px;
+      margin-top: 20px;
+    }
+    footer {
+      margin-top: 40px;
+      font-size: 14px;
+      color: #888;
+      padding-bottom: 20px;
     }
   </style>
 </head>
 <body>
 
+  <div class="designer">تم التصميم بواسطة محمد الحسين — 0952725590</div>
   <img src="https://i.ibb.co/KpdJjYwq/logo.jpg" alt="شعار المدرسة" class="logo">
   <h1>مدرسة بدر الدين الغزال</h1>
   <p>نقرب المسافات رغم الصعوبات</p>
@@ -74,7 +79,7 @@
     <a href="admin.html">🧑‍💼 دخول المدير</a>
   </div>
 
-  <footer>تم التصميم بواسطة محمد الحسين — 0952725590</footer>
+  <footer>© جميع الحقوق محفوظة</footer>
 
 </body>
 </html>
