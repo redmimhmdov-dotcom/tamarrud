@@ -3,29 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <title>إدخال بيانات الطالب</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    body { font-family: 'Segoe UI', sans-serif; direction: rtl; padding: 20px; background: #f0f4f8; }
-    input, select, button { padding: 10px; margin: 5px; font-size: 16px; }
-    #saveNotification {
-      display: none;
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: #00796b;
-      color: white;
-      padding: 12px 20px;
-      border-radius: 8px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-      font-size: 16px;
-      z-index: 999;
-    }
+    body { font-family: 'Segoe UI', sans-serif; direction: rtl; background: #121212; color: #fff; padding: 20px; }
+    input, select, button { padding: 10px; margin: 5px; font-size: 16px; border-radius: 6px; border: none; }
+    input, select { background: #333; color: #fff; }
+    button { background: linear-gradient(to right, #ff9800, #f57c00); color: #212121; font-weight: bold; }
   </style>
 </head>
 <body>
-  <h2>إدخال بيانات الطالب</h2>
+  <h2>👨‍🏫 إدخال بيانات الطالب</h2>
+  <input id="date" placeholder="📅 تاريخ اليوم">
   <input id="name" placeholder="اسم الطالب الثلاثي">
   <input id="class" placeholder="الصف">
-  <input id="group" placeholder="الشعبة"><br>
+  <input id="group" placeholder="الشعبة">
   <select id="subject">
     <option>الرياضيات</option>
     <option>الانجليزي</option>
@@ -37,48 +28,31 @@
   <input id="homework" placeholder="وظائف">
   <input id="quiz" placeholder="مذاكرة">
   <input id="exam" placeholder="امتحان">
-  <button onclick="saveData()">💾 حفظ البيانات</button>
-
-  <div id="saveNotification">✅ تم حفظ البيانات بنجاح</div>
+  <button onclick="sendData()">💾 حفظ البيانات</button>
+  <p id="status"></p>
 
   <script>
-    let studentsData = JSON.parse(localStorage.getItem("studentsData") || "[]");
-
-    function saveData() {
-      const name = document.getElementById("name").value.trim();
-      const className = document.getElementById("class").value.trim();
-      const group = document.getElementById("group").value.trim();
-      const subject = document.getElementById("subject").value;
-      const absence = document.getElementById("absence").value;
-      const delay = document.getElementById("delay").value;
-      const homework = document.getElementById("homework").value;
-      const quiz = document.getElementById("quiz").value;
-      const exam = document.getElementById("exam").value;
-
-      let student = studentsData.find(s => s.name === name && s.class === className);
-      if (!student) {
-        student = { name, class: className, group, status: {} };
-        studentsData.push(student);
-      }
-
-      student.status[subject] = {
-        "غياب": absence,
-        "تأخر": delay,
-        "وظائف": homework,
-        "مذاكرة": quiz,
-        "امتحان": exam
+    function sendData() {
+      const data = {
+        date: document.getElementById("date").value,
+        name: document.getElementById("name").value,
+        class: document.getElementById("class").value,
+        group: document.getElementById("group").value,
+        subject: document.getElementById("subject").value,
+        absence: document.getElementById("absence").value,
+        delay: document.getElementById("delay").value,
+        homework: document.getElementById("homework").value,
+        quiz: document.getElementById("quiz").value,
+        exam: document.getElementById("exam").value
       };
 
-      localStorage.setItem("studentsData", JSON.stringify(studentsData));
-      showSaveNotification();
-    }
-
-    function showSaveNotification() {
-      const note = document.getElementById("saveNotification");
-      note.style.display = "block";
-      setTimeout(() => {
-        note.style.display = "none";
-      }, 3000);
+      fetch("https://sheetdb.io/api/v1/6534bwnl5o7sl", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ data })
+      })
+      .then(res => res.ok ? "✅ تم الحفظ بنجاح" : "❌ فشل الحفظ")
+      .then(msg => document.getElementById("status").textContent = msg);
     }
   </script>
 </body>
