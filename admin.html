@@ -8,27 +8,26 @@
     html, body {
       margin: 0;
       padding: 0;
-      height: 100vh;
-      overflow: hidden;
+      min-height: 100vh;
+      overflow-y: auto;
       background: #121212;
       font-family: 'Segoe UI', sans-serif;
       color: #f5f5f5;
       direction: rtl;
       display: flex;
       flex-direction: column;
-      justify-content: center;
       align-items: center;
       text-align: center;
     }
     .logo {
-      width: 250px;
-      margin-bottom: 10px;
+      width: 180px;
+      margin: 10px 0;
       border-radius: 12px;
       box-shadow: 0 0 10px rgba(255, 152, 0, 0.5);
     }
     h2 {
       color: #ff9800;
-      margin-bottom: 5px;
+      margin: 10px 0 5px;
     }
     p {
       color: #ccc;
@@ -67,16 +66,22 @@
       color: #4caf50;
       font-weight: bold;
     }
+    .designer {
+      font-size: 14px;
+      color: #888;
+      margin-top: 20px;
+    }
     footer {
       margin-top: auto;
       font-size: 14px;
       color: #888;
-      padding: 10px;
+      padding-bottom: 20px;
     }
   </style>
 </head>
 <body>
 
+  <div class="designer">تم التصميم بواسطة محمد الحسين — 0952725590</div>
   <img src="https://i.ibb.co/KpdJjYwq/logo.jpg" class="logo" alt="شعار المدرسة">
   <h2>🧑‍💼 لوحة تحكم المدير</h2>
   <p>نقرب المسافات رغم الصعوبات</p>
@@ -91,7 +96,7 @@
     <div id="adminData"></div>
   </div>
 
-  <footer>تم التصميم بواسطة محمد الحسين — 0952725590</footer>
+  <footer>© جميع الحقوق محفوظة</footer>
 
   <script>
     const adminPassword = "1234";
