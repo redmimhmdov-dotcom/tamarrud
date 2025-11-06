@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>استعلام ولي الأمر</title>
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; direction: rtl; padding: 20px; background: #f0f4f8; }
+    input, button { padding: 10px; margin: 5px; font-size: 16px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+    th, td { border: 1px solid #ccc; padding: 8px; }
+  </style>
+</head>
+<body>
+  <h2>استعلام ولي الأمر</h2>
+  <input id="searchName" placeholder="اسم الطالب الثلاثي">
+  <input id="searchClass" placeholder="الصف">
+  <button onclick="searchStudent()">🔍 استعلام</button>
+  <div id="result"></div>
+
+  <script>
+    let studentsData = JSON.parse(localStorage.getItem("studentsData") || "[]");
+
+    function searchStudent() {
+      const name = document.getElementById("searchName").value.trim();
+      const className = document.getElementById("searchClass").value.trim();
+      const student = studentsData.find(s => s.name === name && s.class === className);
+      const resultDiv = document.getElementById("result");
+
+      if (student) {
+        let html = `<h3>الطالب: ${student.name} - الصف: ${student.class} - الشعبة: ${student.group}</h3>`;
+        html += `<table><tr><th>المادة</th><th>غياب</th><th>تأخر</th><th>وظائف</th><th>مذاكرة</th><th>امتحان</th></tr>`;
+        for (const [subject, status] of Object.entries(student.status)) {
+          html += `<tr><td>${subject}</td><td>${status["غياب"]}</td><td>${status["تأخر"]}</td><td>${status["وظائف"]}</td><td>${status["مذاكرة"]}</td><td>${status["امتحان"]}</td></tr>`;
+        }
+        html += `</table>`;
+        resultDiv.innerHTML = html;
+      } else {
+        resultDiv.innerHTML = "<p>❌ لم يتم العثور على الطالب.</p>";
+      }
+    }
+  </script>
+</body>
+</html>
