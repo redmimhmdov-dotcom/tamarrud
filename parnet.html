@@ -3,24 +3,31 @@
 <head>
   <meta charset="UTF-8">
   <title>استعلام ولي الأمر</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <style>
-    body {
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      overflow: hidden;
       background: #121212;
-      color: #f5f5f5;
       font-family: 'Segoe UI', sans-serif;
+      color: #f5f5f5;
       direction: rtl;
-      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       text-align: center;
     }
     .logo {
-      width: 120px;
-      margin-bottom: 10px;
+      width: 180px;
+      margin-top: 20px;
       border-radius: 12px;
       box-shadow: 0 0 10px rgba(255, 152, 0, 0.5);
     }
     h2 {
       color: #ff9800;
-      margin-bottom: 5px;
+      margin: 10px 0 5px;
     }
     p {
       color: #ccc;
@@ -51,10 +58,16 @@
       border: 1px solid #555;
       padding: 8px;
     }
+    #result {
+      max-height: 40vh;
+      overflow-y: auto;
+      margin-bottom: 20px;
+    }
     footer {
-      margin-top: 40px;
+      margin-top: auto;
       font-size: 14px;
       color: #888;
+      padding: 10px;
     }
   </style>
 </head>
@@ -83,7 +96,9 @@
         let html = `<h3>الطالب: ${student.name} - الصف: ${student.class} - الشعبة: ${student.group}</h3>`;
         html += `<table><tr><th>المادة</th><th>غياب</th><th>تأخر</th><th>وظائف</th><th>مذاكرة</th><th>امتحان</th></tr>`;
         for (const [subject, status] of Object.entries(student.status)) {
-          html += `<tr><td>${subject}</td><td>${status["غياب"]}</td><td>${status["تأخر"]}</td><td>${status["وظائف"]}</td><td>${status["مذاكرة"]}</td><td>${status["امتحان"]}</td></tr>`;
+          html += `<tr><td>${subject}</td><td>${status["غياب"]}</td><td>$
+{status["تاريخ اليوم"]}</td><td>$
+{status["تأخر"]}</td><td>${status["وظائف"]}</td><td>${status["مذاكرة"]}</td><td>${status["امتحان"]}</td></tr>`;
         }
         html += `</table>`;
         resultDiv.innerHTML = html;
