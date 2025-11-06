@@ -8,8 +8,8 @@
     html, body {
       margin: 0;
       padding: 0;
-      height: 100vh;
-      overflow: hidden;
+      min-height: 100vh;
+      overflow-y: auto;
       background: #121212;
       font-family: 'Segoe UI', sans-serif;
       color: #f5f5f5;
@@ -20,8 +20,8 @@
       text-align: center;
     }
     .logo {
-      width: 250px;
-      margin-top: 20px;
+      width: 180px;
+      margin-top: 10px;
       border-radius: 12px;
       box-shadow: 0 0 10px rgba(255, 152, 0, 0.5);
     }
@@ -62,27 +62,32 @@
       font-size: 16px;
       z-index: 999;
     }
-    footer {
-      margin-top: auto;
+    .designer {
       font-size: 14px;
       color: #888;
-      padding: 20px;
+      margin-top: 20px;
+    }
+    footer {
+      margin-top: 40px;
+      font-size: 14px;
+      color: #888;
+      padding-bottom: 20px;
     }
   </style>
 </head>
 <body>
+  <div class="designer">تم التصميم بواسطة محمد الحسين — 0952725590</div>
   <img src="https://i.ibb.co/KpdJjYwq/logo.jpg" class="logo" alt="شعار المدرسة">
   <h2>👨‍🏫 إدخال بيانات الطالب</h2>
   <p>نقرب المسافات رغم الصعوبات</p>
 
+  <input id="date" placeholder="📅 تاريخ اليوم">
   <input id="name" placeholder="اسم الطالب الثلاثي">
   <input id="class" placeholder="الصف">
   <input id="group" placeholder="الشعبة"><br>
   <select id="subject">
     <option>الرياضيات</option>
-    <option>الفرنسي</option>
     <option>الانجليزي</option>
-    <option>التربية الدينية</option>
     <option>العربي</option>
     <option>علوم</option>
   </select>
@@ -91,12 +96,11 @@
   <input id="homework" placeholder="وظائف">
   <input id="quiz" placeholder="مذاكرة">
   <input id="exam" placeholder="امتحان">
-  <input id="quiz" placeholder="تاريخ اليوم">
   <button onclick="saveData()">💾 حفظ البيانات</button>
 
   <div id="saveNotification">✅ تم حفظ البيانات بنجاح</div>
 
-  <footer>تم التصميم بواسطة محمد الحسين — 0952725590</footer>
+  <footer>© جميع الحقوق محفوظة</footer>
 
   <script>
     let studentsData = JSON.parse(localStorage.getItem("studentsData") || "[]");
@@ -111,10 +115,11 @@
       const homework = document.getElementById("homework").value;
       const quiz = document.getElementById("quiz").value;
       const exam = document.getElementById("exam").value;
+      const date = document.getElementById("date").value;
 
       let student = studentsData.find(s => s.name === name && s.class === className);
       if (!student) {
-        student = { name, class: className, group, status: {} };
+        student = { name, class: className, group, status: {}, dates: [] };
         studentsData.push(student);
       }
 
@@ -123,7 +128,8 @@
         "تأخر": delay,
         "وظائف": homework,
         "مذاكرة": quiz,
-        "امتحان": exam
+        "امتحان": exam,
+        "تاريخ": date
       };
 
       localStorage.setItem("studentsData", JSON.stringify(studentsData));
