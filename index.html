@@ -17,29 +17,25 @@
       min-height: 100vh;
       text-align: center;
     }
-    header {
-      margin-bottom: 30px;
-    }
-    header h1 {
-      font-size: 32px;
-      color: #ff9800;
-      margin-bottom: 10px;
-    }
-    header p {
-      font-size: 18px;
-      color: #ccc;
-    }
     .logo {
       width: 140px;
-      margin-bottom: 15px;
+      margin-top: 20px;
       border-radius: 12px;
       box-shadow: 0 0 10px rgba(255, 152, 0, 0.5);
+    }
+    h1 {
+      color: #ff9800;
+      margin: 10px 0 5px;
+    }
+    p {
+      color: #ccc;
+      margin: 5px;
     }
     .buttons {
       display: flex;
       flex-direction: column;
       gap: 15px;
-      margin-top: 20px;
+      margin-top: 30px;
     }
     .buttons a {
       text-decoration: none;
@@ -55,27 +51,26 @@
     .buttons a:hover {
       transform: scale(1.05);
     }
-    @media(min-width: 600px) {
-      .buttons {
-        flex-direction: row;
-      }
+    footer {
+      margin-top: 40px;
+      font-size: 14px;
+      color: #888;
     }
   </style>
 </head>
 <body>
 
-  <header>
-    <!-- شعار المدرسة بصيغة Base64 -->
-    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAACWCAMAAADzJ3zNAAA..." alt="شعار المدرسة" class="logo">
-    <h1>مدرسة بدر الدين الغزال</h1>
-    <p>اختر نوع الدخول المناسب لك</p>
-  </header>
+  <img src="https://i.ibb.co/KpdJjYwq/logo.jpg" alt="شعار المدرسة" class="logo">
+  <h1>مدرسة بدر الدين الغزال</h1>
+  <p>نقرب المسافات رغم الصعوبات</p>
 
   <div class="buttons">
     <a href="parent.html">👨‍👩‍👧‍👦 دخول ولي الأمر</a>
     <a href="teacher.html">👨‍🏫 دخول المعلم</a>
     <a href="admin.html">🧑‍💼 دخول المدير</a>
   </div>
+
+  <footer>تم التصميم بواسطة محمد الحسين — 0952725590</footer>
 
 </body>
 </html>
