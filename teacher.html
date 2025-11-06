@@ -2,52 +2,57 @@
 <html lang="ar">
 <head>
   <meta charset="UTF-8">
-  <title>استعلام ولي الأمر</title>
+  <title>إدخال بيانات الطالب</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body { font-family: 'Segoe UI', sans-serif; direction: rtl; background: #121212; color: #fff; padding: 20px; }
-    input, button { padding: 10px; margin: 5px; font-size: 16px; border-radius: 6px; border: none; background: #333; color: #fff; }
+    input, select, button { padding: 10px; margin: 5px; font-size: 16px; border-radius: 6px; border: none; }
+    input, select { background: #333; color: #fff; }
     button { background: linear-gradient(to right, #ff9800, #f57c00); color: #212121; font-weight: bold; }
-    table { width: 100%; border-collapse: collapse; margin-top: 15px; background: #222; }
-    th, td { border: 1px solid #555; padding: 8px; color: #fff; }
   </style>
 </head>
 <body>
-  <h2>👨‍👩‍👧‍👦 استعلام ولي الأمر</h2>
-  <input id="searchName" placeholder="اسم الطالب الثلاثي">
-  <input id="searchClass" placeholder="الصف">
-  <button onclick="searchStudent()">🔍 استعلام</button>
-  <div id="result"></div>
+  <h2>👨‍🏫 إدخال بيانات الطالب</h2>
+  <input id="date" placeholder="📅 تاريخ اليوم">
+  <input id="name" placeholder="اسم الطالب الثلاثي">
+  <input id="class" placeholder="الصف">
+  <input id="group" placeholder="الشعبة">
+  <select id="subject">
+    <option>الرياضيات</option>
+    <option>الانجليزي</option>
+    <option>العربي</option>
+    <option>علوم</option>
+  </select>
+  <input id="absence" placeholder="غياب">
+  <input id="delay" placeholder="تأخر">
+  <input id="homework" placeholder="وظائف">
+  <input id="quiz" placeholder="مذاكرة">
+  <input id="exam" placeholder="امتحان">
+  <button onclick="sendData()">💾 حفظ البيانات</button>
+  <p id="status"></p>
 
   <script>
-    async function searchStudent() {
-      const name = document.getElementById("searchName").value.trim();
-      const className = document.getElementById("searchClass").value.trim();
-      const res = await fetch("https://sheetdb.io/api/v1/6534bwnl5o7sl");
-      const data = await res.json();
-      const filtered = data.filter(s => s.name === name && s.class === className);
+    function sendData() {
+      const data = {
+        date: document.getElementById("date").value,
+        name: document.getElementById("name").value,
+        class: document.getElementById("class").value,
+        group: document.getElementById("group").value,
+        subject: document.getElementById("subject").value,
+        absence: document.getElementById("absence").value,
+        delay: document.getElementById("delay").value,
+        homework: document.getElementById("homework").value,
+        quiz: document.getElementById("quiz").value,
+        exam: document.getElementById("exam").value
+      };
 
-      const resultDiv = document.getElementById("result");
-      if (filtered.length === 0) {
-        resultDiv.innerHTML = "<p>❌ لم يتم العثور على الطالب.</p>";
-        return;
-      }
-
-      let html = `<h3>الطالب: ${name} - الصف: ${className}</h3>`;
-      html += `<table><tr><th>المادة</th><th>غياب</th><th>تأخر</th><th>وظائف</th><th>مذاكرة</th><th>امتحان</th><th>تاريخ</th></tr>`;
-      filtered.forEach(s => {
-        html += `<tr>
-          <td>${s.subject}</td>
-          <td>${s.absence}</td>
-          <td>${s.delay}</td>
-          <td>${s.homework}</td>
-          <td>${s.quiz}</td>
-          <td>${s.exam}</td>
-          <td>${s.date}</td>
-        </tr>`;
-      });
-      html += `</table>`;
-      resultDiv.innerHTML = html;
+      fetch("https://sheetdb.io/api/v1/6534bwnl5o7sl", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ data })
+      })
+      .then(res => res.ok ? "✅ تم الحفظ بنجاح" : "❌ فشل الحفظ")
+      .then(msg => document.getElementById("status").textContent = msg);
     }
   </script>
 </body>
