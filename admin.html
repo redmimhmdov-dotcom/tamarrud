@@ -3,59 +3,66 @@
 <head>
   <meta charset="UTF-8">
   <title>لوحة تحكم المدير</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    body { font-family: 'Segoe UI', sans-serif; direction: rtl; padding: 20px; background: #f0f4f8; }
-    table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-    th, td { border: 1px solid #ccc; padding: 8px; }
-    button { padding: 8px 16px; margin: 5px; background: #00796b; color: white; border: none; border-radius: 5px; }
+    body { font-family: 'Segoe UI', sans-serif; direction: rtl; background: #121212; color: #fff; padding: 20px; }
+    input, button { padding: 10px; margin: 5px; font-size: 16px; border-radius: 6px; border: none; background: #333; color: #fff; }
+    button { background: linear-gradient(to right, #ff9800, #f57c00); color: #212121; font-weight: bold; }
+    table { width: 100%; border-collapse: collapse; margin-top: 15px; background: #222; }
+    th, td { border: 1px solid #555; padding: 8px; color: #fff; }
   </style>
 </head>
 <body>
-  <h2>لوحة تحكم المدير</h2>
-  <button onclick="exportJSON()">📥 تصدير JSON</button>
-  <div id="adminData"></div>
+  <h2>🧑‍💼 لوحة تحكم المدير</h2>
+  <input type="password" id="password" placeholder="كلمة المرور">
+  <button onclick="checkPassword()">دخول</button>
+  <div id="panel" style="display:none;">
+    <h3>📋 بيانات الطلاب</h3>
+    <button onclick="loadData()">🔄 تحديث</button>
+    <div id="data"></div>
+  </div>
 
   <script>
-    let studentsData = JSON.parse(localStorage.getItem("studentsData") || "[]");
+    const adminPassword = "1234";
+    const apiURL = "https://sheetdb.io/api/v1/6534bwnl5o7sl";
 
-    function showAdminData() {
-      const container = document.getElementById("adminData");
-      if (studentsData.length === 0) {
-        container.innerHTML = "<p>لا توجد بيانات بعد.</p>";
+    function checkPassword() {
+      const input = document.getElementById("password").value;
+      if (input === adminPassword) {
+        document.getElementById("panel").style.display = "block";
+        loadData();
+      } else {
+        alert("❌ كلمة المرور غير صحيحة");
+      }
+    }
+
+    async function loadData() {
+      const res = await fetch(apiURL);
+      const data = await res.json();
+      const container = document.getElementById("data");
+      if (data.length === 0) {
+        container.innerHTML = "<p>لا توجد بيانات.</p>";
         return;
       }
 
-      let html = "<table><tr><th>الاسم</th><th>الصف</th><th>الشعبة</th><th>عدد المواد</th><th>حذف</th></tr>";
-      studentsData.forEach((s, i) => {
+      let html = "<table><tr><th>الاسم</th><th>الصف</th><th>الشعبة</th><th>المادة</th><th>غياب</th><th>تأخر</th><th>وظائف</th><th>مذاكرة</th><th>امتحان</th><th>تاريخ</th><th>حذف</th></tr>";
+      data.forEach((s, i) => {
         html += `<tr>
-          <td>${s.name}</td>
-          <td>${s.class}</td>
-          <td>${s.group}</td>
-          <td>${Object.keys(s.status).length}</td>
-          <td><button onclick="deleteStudent(${i})">🗑️ حذف</button></td>
+          <td>${s.name}</td><td>${s.class}</td><td>${s.group}</td><td>${s.subject}</td>
+          <td>${s.absence}</td><td>${s.delay}</td><td>${s.homework}</td><td>${s.quiz}</td><td>${s.exam}</td><td>${s.date}</td>
+          <td><button onclick="deleteRow(${s.id})">🗑️</button></td>
         </tr>`;
       });
       html += "</table>";
       container.innerHTML = html;
     }
 
-    function deleteStudent(index) {
-      if (confirm("هل أنت متأكد من حذف هذا الطالب؟")) {
-        studentsData.splice(index, 1);
-        localStorage.setItem("studentsData", JSON.stringify(studentsData));
-        showAdminData();
+    async function deleteRow(id) {
+      if (confirm("هل تريد حذف هذا السطر؟")) {
+        await fetch(`${apiURL}/id/${id}`, { method: "DELETE" });
+        loadData();
       }
     }
-
-    function exportJSON() {
-      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(studentsData, null, 2));
-      const dl = document.createElement("a");
-      dl.setAttribute("href", dataStr);
-      dl.setAttribute("download", "studentsData.json");
-      dl.click();
-    }
-
-    showAdminData();
   </script>
 </body>
 </html>
