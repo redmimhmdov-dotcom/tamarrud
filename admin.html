@@ -1,89 +1,136 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar">
 <head>
   <meta charset="UTF-8">
-  <title>لوحة المعلم</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>لوحة تحكم المدير</title>
+  <style>
+    body {
+      background: #121212;
+      color: #f5f5f5;
+      font-family: 'Segoe UI', sans-serif;
+      direction: rtl;
+      padding: 20px;
+      text-align: center;
+    }
+    .logo {
+      width: 250px;
+      margin-bottom: 25px;
+      border-radius: 25px;
+      box-shadow: 0 0 25px rgba(255, 152, 0, 0.5);
+    }
+    h2 {
+      color: #ff9800;
+      margin-bottom: 10px;
+    }
+    input {
+      padding: 10px;
+      margin: 10px;
+      font-size: 16px;
+      border-radius: 6px;
+      border: none;
+      background: #333;
+      color: #fff;
+      width: 200px;
+    }
+    button {
+      padding: 10px 20px;
+      background: #00796b;
+      color: #212121;
+      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #555;
+      padding: 8px;
+    }
+    #adminPanel {
+      display: none;
+    }
+    #notification {
+      margin-top: 25px;
+      color: #4caf50;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
-  <h2>📝 إدخال بيانات الطالب</h2>
-  <input type="text" id="name" placeholder="الاسم الثلاثي">
-  <input type="text" id="number" placeholder="رقم الاكتتاب">
-  <select id="branch" onchange="renderSubjects()">
-    <option value="">اختر الفرع</option>
-    <option value="أدبي">أدبي</option>
-    <option value="علمي">علمي</option>
-  </select>
-  <div id="subjects-area"></div>
-  <button onclick="saveStudent()">💾 حفظ البيانات</button>
+
+  <!-- شعار المدرسة -->
+  <img src="logo.png" alt="شعار المدرسة" class="logo">
+  <h2>نقرب المسافات رغم الصعوبات </h2>
+  <h2>مدرسة بدر الدين الغزال</h2>
+  <p>اختر نوع الدخول المناسب لك</p>
+
+  <!-- نموذج كلمة المرور -->
+  <input type="password" id="password" placeholder="كلمة المرور">
+  <button onclick="checkPassword()">دخول</button>
+  <div id="notification"></div>
+
+  <!-- لوحة التحكم -->
+  <div id="adminPanel">
+    <h3>🧑‍💼 لوحة تحكم المدير</h3>
+    <button onclick="exportJSON()">📥 تصدير JSON</button>
+    <div id="adminData"></div>
+  </div>
 
   <script>
-    const subjects = {
-      "أدبي": [
-        { name: "لغة عربية", max: 400, min: 160 },
-        { name: "اللغة الإنجليزية", max: 400, min: 160 },
-        { name: "التاريخ", max: 300, min: 120 },
-        { name: "الجغرافيا", max: 300, min: 120 },
-        { name: "الفلسفة والعلوم الإنسانية", max: 300, min: 120 },
-        { name: "التربية الإسلامية", max: 200, min: 80 }
-      ],
-      "علمي": [
-        { name: "لغة عربية", max: 400, min: 160 },
-        { name: "اللغة الإنجليزية", max: 400, min: 160 },
-        { name: "الرياضيات", max: 600, min: 240 },
-        { name: "الفيزياء", max: 300, min: 120 },
-        { name: "الكيمياء", max: 300, min: 120 },
-        { name: "العلوم", max: 300, min: 120 },
-        { name: "التربية الإسلامية", max: 200, min: 80 }
-      ]
-    };
+    const adminPassword = "1234"; // يمكنك تغييره هنا
+    let studentsData = JSON.parse(localStorage.getItem("studentsData") || "[]");
 
-    function renderSubjects() {
-      const branch = document.getElementById("branch").value;
-      const area = document.getElementById("subjects-area");
-      area.innerHTML = "";
-      if (!branch || !subjects[branch]) return;
-
-      let html = `<table><tr><th>المادة</th><th>الدرجة</th><th>العظمى</th><th>الدنيا</th></tr>`;
-      subjects[branch].forEach((subj, i) => {
-        html += `<tr>
-          <td>${subj.name}</td>
-          <td><input type="number" id="mark_${i}" placeholder="الدرجة"></td>
-          <td>${subj.max}</td>
-          <td>${subj.min}</td>
-        </tr>`;
-      });
-      html += `</table>`;
-      area.innerHTML = html;
+    function checkPassword() {
+      const input = document.getElementById("password").value;
+      const note = document.getElementById("notification");
+      if (input === adminPassword) {
+        document.getElementById("adminPanel").style.display = "block";
+        note.textContent = "✅ تم الدخول بنجاح";
+        showAdminData();
+      } else {
+        note.textContent = "❌ كلمة المرور غير صحيحة";
+      }
     }
 
-    function saveStudent() {
-      const name = document.getElementById("name").value.trim();
-      const number = document.getElementById("number").value.trim();
-      const branch = document.getElementById("branch").value;
-      if (!name || !number || !branch) return alert("يرجى تعبئة جميع الحقول");
+    function showAdminData() {
+      const container = document.getElementById("adminData");
+      if (studentsData.length === 0) {
+        container.innerHTML = "<p>لا توجد بيانات بعد.</p>";
+        return;
+      }
 
-      const marks = {};
-      subjects[branch].forEach((subj, i) => {
-        marks[subj.name] = {
-          value: +document.getElementById("mark_" + i).value,
-          max: subj.max,
-          min: subj.min
-        };
+      let html = "<table><tr><th>الاسم</th><th>الصف</th><th>الشعبة</th><th>عدد المواد</th><th>حذف</th></tr>";
+      studentsData.forEach((s, i) => {
+        html += `<tr>
+          <td>${s.name}</td>
+          <td>${s.class}</td>
+          <td>${s.group}</td>
+          <td>${Object.keys(s.status).length}</td>
+          <td><button onclick="deleteStudent(${i})">🗑️ حذف</button></td>
+        </tr>`;
       });
+      html += "</table>";
+      container.innerHTML = html;
+    }
 
-      const student = {
-        name,
-        number,
-        branch,
-        governorate: "الحسكة",
-        year: "2025",
-        marks
-      };
+    function deleteStudent(index) {
+      if (confirm("هل أنت متأكد من حذف هذا الطالب؟")) {
+        studentsData.splice(index, 1);
+        localStorage.setItem("studentsData", JSON.stringify(studentsData));
+        showAdminData();
+      }
+    }
 
-      const key = "student_" + number + "_" + branch + "_2025";
-      localStorage.setItem(key, JSON.stringify(student));
-      alert("✅ تم حفظ بيانات الطالب بنجاح");
+    function exportJSON() {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(studentsData, null, 2));
+      const dl = document.createElement("a");
+      dl.setAttribute("href", dataStr);
+      dl.setAttribute("download", "studentsData.json");
+      dl.click();
     }
   </script>
 </body>
