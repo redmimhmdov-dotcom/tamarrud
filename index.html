@@ -3,10 +3,12 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>KATANBUILD.com | حلول البناء المتكاملة</title>
-    <meta name="description" content="KATANBUILD - الشركة الرائدة في توفير مواد البناء عالية الجودة، لاصقات، طينة، روبة، وعوازل متطورة." />
-    <meta name="keywords" content="مواد بناء, لاصق سيراميك, لاصق غرانيت, عوازل, طينة, روبة, KATANBUILD" />
-    <meta name="author" content="KATANBUILD" />
+    <title>KatanBuild.com | حلول البناء المتكاملة</title>
+    <meta name="description" content="KatanBuild.com - الشركة الرائدة في توفير مواد البناء عالية الجودة، لاصقات، طينة، روبة، وعوازل متطورة." />
+    <meta name="keywords" content="مواد بناء, لاصق سيراميك, لاصق غرانيت, عوازل, طينة, روبة, KatanBuild" />
+    <meta name="author" content="KatanBuild" />
+    <meta property="og:title" content="KatanBuild.com" />
+    <meta property="og:description" content="حلول البناء المتكاملة بجودة عالمية" />
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -415,7 +417,7 @@
 <body>
 
     <!-- الشعار الخلفي -->
-    <img src="https://i.ibb.co/5XvXLhGG/page-0001.jpg" class="watermark-logo" alt="KATANBUILD" />
+    <img src="https://i.ibb.co/5XvXLhGG/page-0001.jpg" class="watermark-logo" alt="KatanBuild" />
 
     <!-- خلفية النجوم -->
     <canvas id="bgCanvas"></canvas>
@@ -424,9 +426,9 @@
     <div id="splash">
         <div class="splash-container">
             <div class="splash-logo-box">
-                <img src="https://i.ibb.co/5XvXLhGG/page-0001.jpg" alt="KATANBUILD" />
+                <img src="https://i.ibb.co/5XvXLhGG/page-0001.jpg" alt="KatanBuild" />
             </div>
-            <h1 class="splash-title">KATANBUILD</h1>
+            <h1 class="splash-title">KatanBuild</h1>
             
             <div class="typewriter-box">
                 <span class="typewriter-text" id="typewriterText"></span>
@@ -439,7 +441,7 @@
         <div class="logo" id="mainLogo">
             <img src="https://i.ibb.co/5XvXLhGG/page-0001.jpg" height="45" width="45" />
             <div>
-                <span class="logo-text">KATANBUILD</span>
+                <span class="logo-text">KatanBuild</span>
                 <span class="logo-sub">مواد بناء متطورة</span>
             </div>
         </div>
@@ -494,7 +496,7 @@
                 <h4 style="color:#fff; margin-bottom:15px; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:8px;">📊 التقرير التقديري:</h4>
                 <div class="res-item">
                     <span>الوزن المطلوب:</span>
-                    <span class="res-value" id="resTotalKg">200 كغ</span>
+                    <span class="res-value" id="resTotalKg">200.0 كغ</span>
                 </div>
                 <div class="res-item">
                     <span>عدد الأكياس (25 كغ):</span>
@@ -524,7 +526,7 @@
             <a href="#">عن الشركة</a>
             <a href="#">اتصل بنا</a>
         </div>
-        <p style="font-size:14px; opacity:0.7;">© 2026 KATANBUILD.com - جميع الحقوق محفوظة</p>
+        <p style="font-size:14px; opacity:0.7;">© 2026 KatanBuild.com - جميع الحقوق محفوظة</p>
     </footer>
 
     <!-- ===== النوافذ المنبثقة ===== -->
@@ -613,7 +615,7 @@
     <script>
         // ===== الرسائل المتغيرة =====
         const messages = [
-            "مرحباً بكم في KATANBUILD.com - حلول البناء المتكاملة بجودة عالمية.",
+            "مرحباً بكم في KatanBuild.com - حلول البناء المتكاملة بجودة عالمية.",
             "اكتشفوا مجموعتنا المتنوعة من المواد عالية الأداء للمشاريع السكنية والتجارية.",
             "نوفر لكم أحدث التقنيات في مواد البناء مع دعم فني متكامل."
         ];
@@ -687,7 +689,7 @@
                 card.innerHTML = `
                     <div class="img-container">
                         <span class="badge-cat">${p.cat}</span>
-                        <img src="${p.img}" alt="${p.name}" onload="this.classList.add('loaded')" onerror="this.onerror=null; this.src='https://via.placeholder.com/250x250/0b132b/ffd700?text=KATANBUILD';" />
+                        <img src="${p.img}" alt="${p.name}" onload="this.classList.add('loaded')" onerror="this.onerror=null; this.src='https://via.placeholder.com/250x250/0b132b/ffd700?text=KatanBuild';" />
                     </div>
                     <div class="product-info">
                         <div class="product-title">${p.name}</div>
@@ -829,7 +831,7 @@
         }
 
         function openWhatsApp() {
-            window.open('https://wa.me/0952725590?text=' + encodeURIComponent('مرحباً منصة KATANBUILD، أرغب في الاستفسار عن مواد البناء.'), '_blank');
+            window.open('https://wa.me/0952725590?text=' + encodeURIComponent('مرحباً منصة KatanBuild، أرغب في الاستفسار عن مواد البناء.'), '_blank');
         }
 
         function sendCalcToWA() {
@@ -838,7 +840,7 @@
             const bags = document.getElementById('resBags').innerText;
             const safety = document.getElementById('resSafety').innerText;
             
-            const msg = `طلب حساب كميات من منصة KATANBUILD:\n- المساحة: ${area} م²\n- الوزن المطلوب: ${kg}\n- عدد الأكياس: ${bags}\n- مع الأمان: ${safety}`;
+            const msg = `طلب حساب كميات من منصة KatanBuild:\n- المساحة: ${area} م²\n- الوزن المطلوب: ${kg}\n- عدد الأكياس: ${bags}\n- مع الأمان: ${safety}`;
             window.open('https://wa.me/0952725590?text=' + encodeURIComponent(msg), '_blank');
         }
 
@@ -861,7 +863,7 @@
             qrContainer.innerHTML = '';
             
             qrCodeInstance = new QRCode(qrContainer, {
-                text: `https://katanbuild.com/tds/${encodeURIComponent(name)}`,
+                text: `https://KatanBuild.com/tds/${encodeURIComponent(name)}`,
                 width: 160,
                 height: 160,
                 colorDark : "#030712",
